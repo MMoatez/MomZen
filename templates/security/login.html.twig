@@ -108,9 +108,14 @@ div[center] {
 
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
         <label for="username">Email</label>
-        <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
+        <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email"  >
+        
+        
+        
+        
+        
         <label for="password">Password</label>
-        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" >
 
         <input type="hidden" name="_csrf_token"
                value="{{ csrf_token('authenticate') }}"
@@ -125,7 +130,7 @@ div[center] {
         <br>
         <br>
          <p>If you don't have an account yet, <a href="{{ path('app_register')}}">register here!</a></p>
-                <p>If you forgot your password, <a href="forgotpassword.html">click here</a></p>   
+                <p>If you forgot your password, <a href="{{ path('app_forgot_password_request')}}">click here</a></p>   
                 </p>
                 </div>
     </form>

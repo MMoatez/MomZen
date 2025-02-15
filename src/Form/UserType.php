@@ -7,6 +7,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType; 
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+
 
 class UserType extends AbstractType
 {
@@ -30,7 +33,13 @@ class UserType extends AbstractType
             
             ->add('nom')
             ->add('prenom')
-            ->add('password')
+            ->add('password', PasswordType::class, [
+                'label' => 'Mot de passe',
+                'mapped' => false, // Ce champ ne modifie pas directement l'entité
+                'required' => false, // Rendre le champ facultatif
+                'attr' => ['class' => 'form-control'],
+            ])
+        
             ->add('numTel')
             ->add('genre', ChoiceType::class, [
                 'choices'  => [
@@ -42,8 +51,16 @@ class UserType extends AbstractType
                 'placeholder' => 'Sélectionnez votre genre',
                 'attr' => ['class' => 'form-select'],
             ])           
-             ->add('image')
-        ;
+            ->add('image', FileType::class, [
+                'label' => 'Télécharger une image',
+                'mapped' => false, // Indique que ce champ n'est pas directement lié à une propriété de l'entité
+                'required' => false, // Permet de rendre le champ optionnel
+                'attr' => [
+                    'class' => 'form-control', // Applique une classe pour le style
+                    'accept' => 'image/*', // Limite aux fichiers image
+                ],
+            ]);
+        
     }
 
     public function configureOptions(OptionsResolver $resolver): void

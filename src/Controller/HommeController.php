@@ -23,4 +23,14 @@ final class HommeController extends AbstractController{
         ]);
     }
 
+    #[Route('/ambulance', name: 'app_ambulance')]
+    public function ambulance(): Response
+    {
+        return $this->render('homme/ambulance.html.twig', [
+            'controller_name' => 'HommeController',
+        ]);
+    }
+
+    
+
 }

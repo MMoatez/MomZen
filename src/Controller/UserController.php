@@ -30,6 +30,20 @@ final class UserController extends AbstractController{
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+             // Gestion de la photo uploadée
+             $photoFile = $form->get('image')->getData();
+             if ($photoFile) {
+                 $newFilename = uniqid() . '.' . $photoFile->guessExtension();
+     
+                 // Déplacer le fichier vers le répertoire d'upload
+                 $photoFile->move(
+                     $this->getParameter('uploads_directory'), // Répertoire configuré
+                     $newFilename
+                 );
+     
+                 // Enregistrer le chemin du fichier dans l'entité User
+                 $user->setImage($newFilename);
+             }
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -62,35 +76,91 @@ final class UserController extends AbstractController{
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
+            // Gestion de l'image
+            $photoFile = $form->get('image')->getData();
+            if ($photoFile) {
+                $oldImage = $user->getImage();
+                if ($oldImage) {
+                    $uploadsDirectory = $this->getParameter('uploads_directory');
+                    $oldImagePath = $uploadsDirectory . '/' . $oldImage;
+                    if (file_exists($oldImagePath)) {
+                        unlink($oldImagePath);
+                    }
+                }
+    
+                $newFilename = uniqid() . '.' . $photoFile->guessExtension();
+                $photoFile->move($this->getParameter('uploads_directory'), $newFilename);
+                $user->setImage($newFilename);
+            }
+    
+            // Gestion du mot de passe
+            $newPassword = $form->get('password')->getData(); // Directement depuis le formulaire
+            if (!empty($newPassword)) {
+                // Hacher et mettre à jour le nouveau mot de passe
+          
+                $user->setPassword($newPassword);
+            } // Si le champ est vide, ne pas changer le mot de passe
+    
+            // Sauvegarder les changements
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    
+            return $this->redirectToRoute('app_user_show', ['id' => $user->getId()], Response::HTTP_SEE_OTHER);
         }
-
         return $this->render('user/edit.html.twig', [
             'user' => $user,
             'form' => $form,
         ]);
     }
+    
     #[Route('/{id}/editprofile', name: 'app_user_edit_profile', methods: ['GET', 'POST'])]
-    public function editprofile(Request $request, User $user, EntityManagerInterface $entityManager): Response
-    {
+    public function editprofile(
+        Request $request, 
+        User $user, 
+        EntityManagerInterface $entityManager
+    ): Response {
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
+            // Gestion de l'image
+            $photoFile = $form->get('image')->getData();
+            if ($photoFile) {
+                $oldImage = $user->getImage();
+                if ($oldImage) {
+                    $uploadsDirectory = $this->getParameter('uploads_directory');
+                    $oldImagePath = $uploadsDirectory . '/' . $oldImage;
+                    if (file_exists($oldImagePath)) {
+                        unlink($oldImagePath);
+                    }
+                }
+    
+                $newFilename = uniqid() . '.' . $photoFile->guessExtension();
+                $photoFile->move($this->getParameter('uploads_directory'), $newFilename);
+                $user->setImage($newFilename);
+            }
+    
+            // Gestion du mot de passe
+            $newPassword = $form->get('password')->getData(); // Directement depuis le formulaire
+            if (!empty($newPassword)) {
+                // Hacher et mettre à jour le nouveau mot de passe
+          
+                $user->setPassword($newPassword);
+            } // Si le champ est vide, ne pas changer le mot de passe
+    
+            // Sauvegarder les changements
             $entityManager->flush();
-
+    
             return $this->redirectToRoute('app_profile', ['id' => $user->getId()], Response::HTTP_SEE_OTHER);
         }
-
+    
         return $this->render('user/editprofile.html.twig', [
             'user' => $user,
             'form' => $form,
         ]);
     }
+    
 
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response

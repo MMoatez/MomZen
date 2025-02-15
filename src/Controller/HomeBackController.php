@@ -14,4 +14,13 @@ final class HomeBackController extends AbstractController{
             'controller_name' => 'HomeBackController',
         ]);
     }
+/*
+    #[Route('user', name: 'app_user')]
+    public function user(): Response
+    {
+        return $this->render('home_back/user.html.twig', [
+            'controller_name' => 'HomeBackController',
+        ]);
+    }
+        */
 }

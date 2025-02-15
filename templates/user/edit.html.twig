@@ -1,13 +1,172 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseback.html.twig' %}
 
 {% block title %}Edit User{% endblock %}
 
 {% block body %}
-    <h1>Edit User</h1>
+    <style>
+        /* Global style */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            padding: 20px;
+        }
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+        /* Title styling */
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
 
-    <a href="{{ path('app_user_index') }}">back to list</a>
+        /* Form Container */
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
 
-    {{ include('user/_delete_form.html.twig') }}
+        /* Button styles */
+        .btn-update {
+            background-color: #28a745; /* Green */
+            color: white;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        /* Button hover effect */
+        .btn-update:hover {
+            background-color: #218838;
+        }
+
+        /* Back to list link style */
+        .btn-back {
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .btn-back:hover {
+            background-color: #0056b3;
+        }
+
+        /* Delete button */
+        .btn-delete {
+            background-color: #dc3545; /* Red */
+            color: white;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+
+    <div class="form-container">
+        <h1>Edit User</h1>
+
+  {% for flash_error in app.flashes('verify_email_error') %}
+                        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+                    {% endfor %}
+
+                    {{ form_start(form, {attr: {'class': 'needs-validation', 'novalidate': true}}) }}
+
+                        <div class="mb-3">
+                            {{ form_label(form.nom, "Nom", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.nom) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.prenom, "Prénom", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.prenom) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.email, "Email", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'exemple@gmail.com'}}) }}
+                            {{ form_errors(form.email) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.password, "Mot de passe", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.password, {'attr': {'class': 'form-control', 'type': 'password'}}) }}
+                            {{ form_errors(form.password) }}
+                          <!--  <small class="text-muted">Votre mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre.</small>   -->
+
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.numTel, "Numéro de téléphone", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.numTel, {'attr': {'class': 'form-control', 'placeholder': '99 999 999'}}) }}
+                            {{ form_errors(form.numTel) }}
+                            <small class="text-muted">Le numéro doit contenir exactement 8 chiffres.</small>
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.genre, "Genre", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.genre, {'attr': {'class': 'form-select'}}) }}
+                            {{ form_errors(form.genre) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.image, "Photo de profil", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.image) }}
+                        </div>
+
+   <div class="mb-3">
+                            {{ form_label(form.roles, "Genre", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.roles, {'attr': {'class': 'form-select'}}) }}
+                            {{ form_errors(form.roles) }}
+                        </div>
+
+
+
+
+
+
+
+                        <button type="submit" class="btn btn-primary w-100">edit</button>
+
+                    {{ form_end(form) }}
+
+        <a href="{{ path('app_user_index') }}" class="btn-back">Back to List</a>
+
+       <!-- <a href="{{ path('app_user_delete', {'id': user.id}) }}" class="btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">Delete</a>
+        -->
+        {{ include('user/_delete_form.html.twig') }}
+    </div>
 {% endblock %}

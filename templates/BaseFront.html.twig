@@ -79,8 +79,9 @@
                     
                     <a class="nav-link" href="{{ path('app_about')}}">Appointment</a>
                     </li>
+                    
                     <li class="nav-item">
-                    <a class="nav-link" href="doctors.html">Ambulance</a>
+                    <a class="nav-link" href="{{ path('app_ambulance')}}">Ambulance</a>
                     </li>
                     <li class="nav-item">
                     <a class="nav-link" href="blog.html">Services</a>
@@ -89,16 +90,46 @@
                     <a class="nav-link" href="contact.html">Contact</a>
                     </li>
      <li class="nav-item">
-    {% if app.user %}
+
+
+
+
+
+
+
+
+         {% if app.user %}
         <span class="navbar-text">
             <a href="{{ path('app_profile', {'id': app.user.id}) }}" class="text-decoration-none">
-                &emsp;&emsp;&emsp;&emsp;{{ app.user.nom }} {{ app.user.prenom }}
+                &emsp;&emsp;&emsp;&emsp;
+                
+                {{ app.user.nom }}
+                {{ app.user.prenom }}
+
+                <td>
+                            {% if app.user.image %}
+                                <img src="{{ asset('uploads/' ~ app.user.image) }}" class="img-thumbnail" width="50">
+                            {% else %}
+                                <span class="text-muted">Aucune image</span>
+                            {% endif %}
+                </td>
             </a>
         </span>
-        <a class="btn btn-danger ml-lg-3" href="{{ path('app_logout') }}">Logout</a>
-    {% else %}
-        <a class="btn btn-primary ml-lg-3" href="{{ path('app_login') }}">Login / Register</a>
-    {% endif %}
+
+        {# Vérification si l'utilisateur est un administrateur #}
+        {% if 'ROLE_ADMIN' in app.user.roles %}
+            <a class="btn btn-warning ml-lg-3" href="{{ path('app_user_index') }}">Back Office</a>
+        {% endif %}
+
+
+            <a class="btn btn-danger ml-lg-3" href="{{ path('app_logout') }}">LogOut</a>
+        {% else %}
+            <a class="btn btn-primary ml-lg-3" href="{{ path('app_login') }}">Login / Register</a>
+        {% endif %}
+
+
+
+
 </li>
 
 

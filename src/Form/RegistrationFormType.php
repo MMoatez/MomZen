@@ -12,6 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Form\Extension\Core\Type\FileType; 
 
 class RegistrationFormType extends AbstractType
 {
@@ -33,13 +34,29 @@ class RegistrationFormType extends AbstractType
                 'placeholder' => 'Sélectionnez votre genre',
                 'attr' => ['class' => 'form-select'],
             ])
-            ->add('password')
+            ->add('password', PasswordType::class, [
+                'label' => 'Mot de passe',
+                'mapped' => false, // Ce champ ne modifie pas directement l'entité
+                'required' => false, // Rendre le champ facultatif
+                'attr' => ['class' => 'form-control'],
+            ])
+        
+        
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
                         'message' => 'You should agree to our terms.',
                     ]),
+                ],
+            ])
+            ->add('image', FileType::class, [
+                'label' => 'Télécharger une image',
+                'mapped' => false, // Indique que ce champ n'est pas directement lié à une propriété de l'entité
+                'required' => false, // Permet de rendre le champ optionnel
+                'attr' => [
+                    'class' => 'form-control', // Applique une classe pour le style
+                    'accept' => 'image/*', // Limite aux fichiers image
                 ],
             ]);
     }

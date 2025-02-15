@@ -27,17 +27,32 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setRoles(['ROLE_USER']);
-
-            // encode the plain password
-         //   $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
-
+    
+            // Gestion de la photo uploadée
+            $photoFile = $form->get('image')->getData();
+            if ($photoFile) {
+                $newFilename = uniqid() . '.' . $photoFile->guessExtension();
+    
+                // Déplacer le fichier vers le répertoire d'upload
+                $photoFile->move(
+                    $this->getParameter('uploads_directory'), // Répertoire configuré
+                    $newFilename
+                );
+    
+                // Enregistrer le chemin du fichier dans l'entité User
+                $user->setImage($newFilename);
+            }
+    
+            // Encoder le mot de passe
+            $user->setPassword($userPasswordHasher->hashPassword($user, $user->getPassword()));
+    
             $entityManager->persist($user);
             $entityManager->flush();
-
-            // generate a signed url and email it to the user
+    
+            // Envoyer l'email de confirmation
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
                     ->from(new Address('moatez.mathlouthi@esprit.tn', 'MomZen Bot'))
@@ -45,17 +60,15 @@ class RegistrationController extends AbstractController
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
-
-            // do anything else you need here, like send an email
-
+    
             return $this->redirectToRoute('app_login');
         }
-
+    
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form,
         ]);
     }
-
+    
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request): Response
     {

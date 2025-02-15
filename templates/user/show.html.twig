@@ -1,9 +1,101 @@
-{% extends 'base.html.twig' %}
+{% extends 'BaseBack.html.twig' %}
 
 {% block title %}User{% endblock %}
 
 {% block body %}
-    <h1>User</h1>
+    <style>
+        /* Style général de la table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 16px;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        /* Style des en-têtes de la table */
+        th {
+            background-color: #f8f9fa;
+            color: #333; /* Texte en noir */
+            text-align: left;
+            padding: 12px;
+            font-weight: bold;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        /* Style des cellules de la table */
+        td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            color: #555;
+        }
+
+        /* Style des liens */
+        a {
+            color: #007bff;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 5px 0;
+            text-align: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Effet hover pour les liens */
+        a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Style du lien de retour et de l'édition */
+        .action-links {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .action-links:hover {
+            background-color: #218838;
+        }
+
+        /* Style pour le bouton de suppression */
+        .btn-delete {
+            background-color: #dc3545; /* Rouge */
+            color: white;
+            text-align: center;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        /* Style pour le conteneur d'actions */
+        .action-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            table {
+                width: 100%;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+
+    <h1>User Details</h1>
 
     <table class="table">
         <tbody>
@@ -27,10 +119,10 @@
                 <th>Prenom</th>
                 <td>{{ user.prenom }}</td>
             </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ user.password }}</td>
-            </tr>
+           <tr>
+                        <th scope="row">Mot de passe</th>
+                        <td>********</td> {# Masquer le mot de passe pour plus de sécurité #}
+                    </tr>
             <tr>
                 <th>NumTel</th>
                 <td>{{ user.numTel }}</td>
@@ -41,14 +133,21 @@
             </tr>
             <tr>
                 <th>Image</th>
-                <td>{{ user.image }}</td>
+                <td>
+                            {% if user.image %}
+                                <img src="{{ asset('uploads/' ~ user.image) }}" class="img-thumbnail" width="150">
+                            {% else %}
+                                <span class="text-muted">Aucune image</span>
+                            {% endif %}
+                        </td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_user_index') }}">back to list</a>
+    <div class="action-buttons">
+        <a href="{{ path('app_user_index') }}" class="action-links">Back to list</a>
+        <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="action-links">Edit</a>
+        {{ include('user/_delete_form.html.twig') }}
+    </div>
 
-    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
-
-    {{ include('user/_delete_form.html.twig') }}
 {% endblock %}

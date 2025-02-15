@@ -3,10 +3,143 @@
 {% block title %}Edit User{% endblock %}
 
 {% block body %}
+    <style>
+        /* styles.css (intégré dans le même fichier) */
+
+        /* Style général pour le formulaire */
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style des labels */
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* Style des champs de saisie */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+
+        /* Effet focus sur les champs */
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #007bff;
+            box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+        }
+
+        /* Bouton de mise à jour */
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        /* Effet hover sur le bouton */
+        button:hover {
+            background: #0056b3;
+        }
+
+        /* Bouton de suppression */
+        form[action*="delete"] button {
+            background: #dc3545;
+        }
+
+        /* Effet hover pour le bouton de suppression */
+        form[action*="delete"] button:hover {
+            background: #b02a37;
+        }
+
+        /* Centrer le titre */
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+
     <h1>Edit User</h1>
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+  {% for flash_error in app.flashes('verify_email_error') %}
+                        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+                    {% endfor %}
+
+                    {{ form_start(form, {attr: {'class': 'needs-validation', 'novalidate': true}}) }}
+
+                        <div class="mb-3">
+                            {{ form_label(form.nom, "Nom", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.nom) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.prenom, "Prénom", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.prenom) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.email, "Email", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'exemple@gmail.com'}}) }}
+                            {{ form_errors(form.email) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.password, "Mot de passe", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.password, {'attr': {'class': 'form-control', 'type': 'password'}}) }}
+                            {{ form_errors(form.password) }}
+                          <!--  <small class="text-muted">Votre mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre.</small>   -->
+
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.numTel, "Numéro de téléphone", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.numTel, {'attr': {'class': 'form-control', 'placeholder': '99 999 999'}}) }}
+                            {{ form_errors(form.numTel) }}
+                            <small class="text-muted">Le numéro doit contenir exactement 8 chiffres.</small>
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.genre, "Genre", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.genre, {'attr': {'class': 'form-select'}}) }}
+                            {{ form_errors(form.genre) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.image, "Photo de profil", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.image) }}
+                        </div>
+
+                       
 
 
+
+
+
+
+
+                        <button type="submit" class="btn btn-primary w-100">edit</button>
+
+                    {{ form_end(form) }}
     {{ include('user/_delete_form.html.twig') }}
 {% endblock %}

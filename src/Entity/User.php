@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -19,25 +20,49 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(length: 180, unique: true)]
+    #[Assert\NotBlank(message: "L'email est obligatoire.")]
+    #[Assert\Email(message: "Veuillez entrer un email valide contenant '@' et '.'")]
     private ?string $email = null;
 
     #[ORM\Column]
     private array $roles = [];
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom est obligatoire.")]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le prénom est obligatoire.")]
     private ?string $prenom = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le mot de passe est obligatoire.")]
+    #[Assert\Length(
+        min: 6,
+        minMessage: "Le mot de passe doit contenir au moins 6 caractères."
+    )]
+    #[Assert\Regex(
+        pattern: "/^(?=.*[A-Z])(?=.*[a-z])(?=.*[\W]).{6,}$/",
+        message: "Le mot de passe doit contenir au moins une majuscule, une minuscule et un symbole."
+    )]
     private ?string $password = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Le numéro de téléphone est obligatoire.")]
+    #[Assert\Length(
+        exactMessage: "Le numéro de téléphone doit contenir exactement 8 chiffres.",
+        min: 8,
+        max: 8
+    )]
+    #[Assert\Regex(
+        pattern: "/^\d{8}$/",
+        message: "Le numéro de téléphone doit contenir uniquement des chiffres."
+    )]
     private ?int $numTel = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Le genre est obligatoire.")]
     private ?string $genre = null;
 
     #[ORM\Column(length: 255)]
@@ -212,4 +237,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     } */
+
+
+
+
+
+
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+private $resetToken;
+
+public function getResetToken(): ?string
+{
+    return $this->resetToken;
+}
+
+public function setResetToken(?string $resetToken): self
+{
+    $this->resetToken = $resetToken;
+
+    return $this;
+}
+
+
+
+
 }
