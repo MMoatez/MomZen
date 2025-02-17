@@ -1,0 +1,73 @@
+{% extends 'BaseFront.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-lg p-4">
+                    <h2 class="text-center mb-4">Créer un compte</h2>
+
+                    {% for flash_error in app.flashes('verify_email_error') %}
+                        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+                    {% endfor %}
+
+                    {{ form_start(registrationForm, {attr: {'class': 'needs-validation', 'novalidate': true}}) }}
+
+                        <div class="mb-3">
+                            {{ form_label(registrationForm.nom, "Nom", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(registrationForm.nom, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(registrationForm.prenom, "Prénom", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(registrationForm.prenom, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(registrationForm.email, "Email", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'exemple@email.com'}}) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(registrationForm.password, "Mot de passe", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(registrationForm.password, {'attr': {'class': 'form-control', 'type': 'password'}}) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(registrationForm.numTel, "Numéro de téléphone", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(registrationForm.numTel, {'attr': {'class': 'form-control', 'placeholder': '+216 99 999 999'}}) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(registrationForm.genre, "Genre", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(registrationForm.genre, {'attr': {'class': 'form-select'}}) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(registrationForm.image, "Photo de profil", {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(registrationForm.image, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+
+                        
+
+                        <div class="form-check mb-3">
+                            {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
+                            <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">
+                                J'accepte les <a href="#">termes et conditions</a>.
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
+
+                    {{ form_end(registrationForm) }}
+
+                    <p class="text-center mt-3">
+                        Vous avez déjà un compte ? <a href="{{ path('app_login') }}">Connectez-vous</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
