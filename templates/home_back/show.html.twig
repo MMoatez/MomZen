@@ -1,0 +1,63 @@
+{% extends 'BaseBack.html.twig' %}
+
+{% block title %}Forum{% endblock %}
+
+{% block body %}
+    <h1>Forum</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ forum.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ forum.titre }}</td>
+            </tr>
+            <tr>
+                <th>Contenu</th>
+                <td>{{ forum.contenu }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td>
+                            {% if forum.image %}
+                                <img src="{{ asset('uploads/' ~ forum.image) }}" class="img-thumbnail" width="150">
+                            {% else %}
+                                <span class="text-muted">Aucune image</span>
+                            {% endif %}
+                        </td>
+                        <td>
+            </tr>
+            <tr>
+                <th>DatePublication</th>
+                <td>{{ forum.datePublication ? forum.datePublication|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br><br><br>
+
+    <h2>Commentaires</h2>
+    {% if forum.commentaires is not empty %}
+        <ul>
+            {% for commentaire in forum.commentaires %}
+                <li>
+                    <strong>{{ commentaire.datePublication|date('Y-m-d H:i:s') }}</strong>
+                    <p>{{ commentaire.contenu }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucun commentaire pour ce forum.</p>
+    {% endif %}
+
+    <h2>Ajouter un commentaire</h2>
+    {{ include('commentaire/_form.html.twig', {'form': commentaire_form}) }}
+
+    <a href="{{ path('app_forum_index') }}">Retour à la liste</a>
+    <a href="{{ path('app_forum_edit', {'id': forum.id}) }}">Modifier</a>
+
+    {{ include('forum/_delete_form.html.twig') }}
+{% endblock %}

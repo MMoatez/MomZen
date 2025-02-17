@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Form\RegistrationFormType;
 
+
 #[Route('/user')]
 final class UserController extends AbstractController{
     #[Route(name: 'app_user_index', methods: ['GET'])]
@@ -20,7 +21,7 @@ final class UserController extends AbstractController{
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
         ]);
-    }
+    }   
 
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -63,6 +64,8 @@ final class UserController extends AbstractController{
             'user' => $user,
         ]);
     }
+    
+
     #[Route('profile/{id}', name: 'app_profile', methods: ['GET'])]
     public function showprofile(User $user): Response
     {
@@ -70,6 +73,13 @@ final class UserController extends AbstractController{
             'user' => $user,
         ]);
     }
+    #[Route('/user/forum', name: 'admin_forum')]
+public function forumAdmin(ForumRepository $forumRepo): Response {
+    $forums = $forumRepo->findAll();
+    return $this->render('admin/forum.html.twig', [
+        'forums' => $forums
+    ]);
+}
 
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
@@ -172,4 +182,13 @@ final class UserController extends AbstractController{
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
+    private $entityManager;
+
+    // Inject the Doctrine service into the controller
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+   
 }

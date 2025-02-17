@@ -31,6 +31,12 @@ final class HommeController extends AbstractController{
         ]);
     }
 
-    
+    #[Route('/forum', name: 'app_forum')]
+    public function forum(): Response
+    {
+        return $this->render('homme/forum.html.twig', [
+            'controller_name' => 'HommeController',
+        ]);
+    }
 
 }

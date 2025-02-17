@@ -36,8 +36,8 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('password', PasswordType::class, [
                 'label' => 'Mot de passe',
-                'mapped' => false, // Ce champ ne modifie pas directement l'entité
-                'required' => false, // Rendre le champ facultatif
+                'mapped' => true, // Ce champ ne modifie pas directement l'entité
+                'required' => true, // Rendre le champ facultatif
                 'attr' => ['class' => 'form-control'],
             ])
         
