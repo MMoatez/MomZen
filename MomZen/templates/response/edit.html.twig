@@ -1,0 +1,83 @@
+{% extends 'BaseBack.html.twig' %}
+
+{% block title %}Edit Response{% endblock %}
+
+{% block body %}
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card my-4">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                            <h6 class="text-white text-capitalize ps-3">Edit Response</h6>
+                        </div>
+                    </div>
+                    <div class="card-body px-4">
+                        <div class="row">
+                            <div class="col-md-8">
+                                {# Reclamation Details #}
+                                <div class="mb-4">
+                                    <h5 class="mb-3">{{ response.reclamation.title }}</h5>
+                                    <div class="d-flex gap-3 mb-3">
+                                        <span class="badge bg-gradient-{{ response.reclamation.status == 'pending' ? 'warning' : 'success' }}">
+                                            {{ response.reclamation.status|capitalize }}
+                                        </span>
+                                    </div>
+                                    <p class="text-sm mb-2">
+                                        <strong>From:</strong> {{ response.reclamation.user.email }}<br>
+                                        <strong>Date:</strong> {{ response.reclamation.createdAt|date('F j, Y H:i') }}
+                                    </p>
+                                    <div class="border rounded p-3 bg-light">
+                                        {{ response.reclamation.description|nl2br }}
+                                    </div>
+                                </div>
+
+                                {# Edit Response Form #}
+                                <div class="mt-4">
+                                    <h5 class="mb-3">Edit Your Response</h5>
+                                    {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+                                        <div class="input-group input-group-outline mb-3">
+                                            {{ form_widget(form.content, {
+                                                'attr': {
+                                                    'class': 'form-control',
+                                                    'rows': '6'
+                                                }
+                                            }) }}
+                                        </div>
+                                        {% if form.content.vars.errors|length > 0 %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form_errors(form.content) }}
+                                            </div>
+                                        {% endif %}
+
+                                        <div class="text-center mt-4">
+                                            <button type="submit" class="btn btn-lg bg-gradient-warning">
+                                                <i class="material-icons">save</i> Update Response
+                                            </button>
+                                            <a href="{{ path('app_reclamation_admin_show', {'id': response.reclamation.id}) }}" class="btn btn-lg bg-gradient-light ms-2">
+                                                Cancel
+                                            </a>
+                                        </div>
+                                    {{ form_end(form) }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header pb-0">
+                                        <h6>Actions</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <a href="{{ path('app_reclamation_admin_show', {'id': response.reclamation.id}) }}" class="btn btn-info w-100 mb-2">
+                                            <i class="material-icons text-sm">arrow_back</i> Back to Reclamation
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %} 

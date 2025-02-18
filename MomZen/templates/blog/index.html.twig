@@ -1,0 +1,46 @@
+{% extends 'BaseFront.html.twig' %}
+
+{% block title %}Blog Articles{% endblock %}
+
+{% block body %}
+    <div class="page-section">
+        <div class="container">
+            <h1 class="text-center mb-5 wow fadeInUp">Latest Articles</h1>
+
+            <div class="row">
+                {% for article in articles %}
+                    <div class="col-lg-4 col-md-6 col-sm-12 py-3 wow fadeInUp">
+                        <div class="card-blog">
+                            {% if article.image %}
+                                <div class="header">
+                                    <div class="post-thumb">
+                                        <img src="{{ asset('uploads/blog/' ~ article.image) }}" alt="{{ article.title }}">
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="body">
+                                <h5 class="post-title">{{ article.title }}</h5>
+                                <div class="site-info">
+                                    <div class="avatar mr-2">
+                                        <span class="mai-person"></span> {{ article.author.email }}
+                                    </div>
+                                    <span class="mai-time"></span> {{ article.createdAt|date('F j, Y') }}
+                                </div>
+                                <div class="post-content">
+                                    {{ article.content|striptags|slice(0, 150) }}...
+                                </div>
+                                <a href="{{ path('app_blog_show', {'id': article.id}) }}" class="btn btn-primary">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-12">
+                        <div class="alert alert-info text-center">
+                            No articles published yet.
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %} 

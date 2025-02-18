@@ -1,0 +1,84 @@
+{% extends 'BaseBack.html.twig' %}
+
+{% block title %}Article Management{% endblock %}
+
+{% block body %}
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card my-4">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+                            <h6 class="text-white text-capitalize ps-3 mb-0">Articles Management</h6>
+                            <a href="{{ path('app_blog_new') }}" class="btn btn-sm btn-info me-3">Create New Article</a>
+                        </div>
+                    </div>
+                    <div class="card-body px-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table class="table align-items-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Title</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Status</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Created At</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Author</th>
+                                        <th class="text-secondary opacity-7">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for article in articles %}
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                {% if article.image %}
+                                                    <div class="me-3">
+                                                        <img src="{{ asset('uploads/blog/' ~ article.image) }}" class="avatar avatar-sm border-radius-lg" alt="article image">
+                                                    </div>
+                                                {% endif %}
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">{{ article.title }}</h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-sm bg-gradient-{{ article.status == 'published' ? 'success' : 'warning' }}">
+                                                {{ article.status|capitalize }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="text-secondary text-xs font-weight-bold">{{ article.createdAt|date('Y-m-d H:i') }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-secondary text-xs font-weight-bold">{{ article.author.email }}</span>
+                                        </td>
+                                        <td class="align-middle">
+                                            <div class="btn-group" role="group">
+                                                <a href="{{ path('app_blog_show', {'id': article.id}) }}" class="btn btn-link text-info px-3 mb-0">
+                                                    <i class="material-icons text-sm me-2">visibility</i>View
+                                                </a>
+                                                <a href="{{ path('app_blog_edit', {'id': article.id}) }}" class="btn btn-link text-warning px-3 mb-0">
+                                                    <i class="material-icons text-sm me-2">edit</i>Edit
+                                                </a>
+                                                <form method="post" action="{{ path('app_blog_delete', {'id': article.id}) }}" style="display: inline-block" onsubmit="return confirm('Are you sure you want to delete this article?');">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
+                                                    <button class="btn btn-link text-danger px-3 mb-0">
+                                                        <i class="material-icons text-sm me-2">delete</i>Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="5" class="text-center">No articles found</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %} 
