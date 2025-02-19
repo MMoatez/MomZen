@@ -1,0 +1,109 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Modifier la Consultation{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="title">✏ Modifier la Consultation</h1>
+
+    <div class="form-container">
+        <div class="card">
+            <div class="card-body">
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+                <div class="form-group">
+                    {{ form_label(form.ordonnance, 'Ordonnance') }}
+                    <div class="input-icon">
+                        {{ form_widget(form.ordonnance, {'attr': {'class': 'form-control'}}) }}
+                        <i class="fa fa-file-medical icon"></i>
+                    </div>
+                    <div class="form-error">{{ form_errors(form.ordonnance) }}</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">✔ Enregistrer</button>
+                <a href="{{ path('app_consultation') }}" class="btn btn-secondary">🔙 Annuler</a>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+{# 🎨 CSS Styling #}
+<style>
+    /* 🌟 Center the form container */
+    .container {
+        max-width: 700px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    .title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #2d6a4f;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+    .card {
+        background: #ffffff;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 600px;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        border: 2px solid #ccc;
+        font-size: 1rem;
+        background-color: #f8fff8;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn {
+        text-decoration: none;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 1rem;
+        margin-top: 10px;
+        transition: 0.3s ease-in-out;
+        display: inline-block;
+    }
+
+    .btn-primary {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #388E3C;
+        transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background-color: #545b62;
+    }
+</style>
+
+{% endblock %}
