@@ -1,0 +1,172 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Dossiers Médicaux{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="title">📁 Dossiers Médicaux</h1>
+
+    {% if dossiermedicals is empty %}
+        <div class="no-records">
+            <p>🚨 Aucun dossier médical trouvé.</p>
+        </div>
+    {% else %}
+        <div class="card-container">
+            {% for dossiermedical in dossiermedicals %}
+                <div class="card">
+                    <div class="card-header">
+                        <h3>👤 {{ dossiermedical.idpatient ? dossiermedical.idpatient.prenom ~ ' ' ~ dossiermedical.idpatient.nom : 'N/A' }}</h3>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>🆔 ID :</strong> {{ dossiermedical.id }}</p>
+                        <p><strong>📜 Historique :</strong> {{ dossiermedical.historique|length > 100 ? dossiermedical.historique|slice(0, 100) ~ '...' : dossiermedical.historique }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ path('app_dossiermedical_show', {'patientId': dossiermedical.idpatient.id, 'rendezvousId': rendezvousId, 'id': dossiermedical.id}) }}" class="btn btn-primary">👁 Voir</a>
+                        <a href="{{ path('app_dossiermedical_edit', {'patientId': dossiermedical.idpatient.id, 'rendezvousId': rendezvousId, 'id': dossiermedical.id}) }}" class="btn btn-warning">✏ Modifier</a>
+                        <a href="{{ path('app_consultation_new', {'dossierId': dossiermedical.id}) }}" class="btn btn-new">➕ Ajouter Consultation</a>
+                        <a href="{{ path('app_consultation') }}" class="btn btn-viewdetails">📑 Consulations</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+{# 🎨 CSS Styling #}
+<style>
+    /* 🌟 Page Container */
+    .container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .title {
+        font-size: 2.2rem;
+        font-weight: bold;
+        color: #2d6a4f;
+        margin-bottom: 25px;
+        text-transform: uppercase;
+    }
+
+    /* 🎨 Card Grid Layout */
+    .card-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 20px;
+    }
+
+    /* 📌 Card Styling */
+    .card {
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        border-radius: 12px;
+        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+        overflow: hidden;
+        border: 1px solid #e0e0e0;
+    }
+
+    .card:hover {
+        transform: scale(1.03);
+        box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-header {
+        background-color: #2d6a4f;
+        color: white;
+        padding: 15px;
+        font-size: 1.3rem;
+        font-weight: bold;
+        text-align: center;
+        text-transform: uppercase;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+
+    .card-body {
+        padding: 16px;
+        font-size: 1rem;
+        line-height: 1.6;
+        text-align: left;
+        color: #444;
+    }
+
+    .card-footer {
+        padding: 16px;
+        text-align: center;
+        background-color: #f8f9fa;
+        border-top: 1px solid #ddd;
+    }
+
+    /* 🎯 Button Styling */
+    .btn {
+        text-decoration: none;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 1rem;
+        margin: 5px;
+        transition: 0.3s ease-in-out;
+        display: inline-block;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-warning {
+        background-color: #f0ad4e;
+        color: white;
+    }
+
+    .btn-warning:hover {
+        background-color: #ec971f;
+    }
+
+    .btn-new {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .btn-new:hover {
+        background-color: #218838;
+    }
+
+    .btn-viewdetails {
+        background-color: #17a2b8;
+        color: white;
+    }
+
+    .btn-viewdetails:hover {
+        background-color: #138496;
+    }
+
+    /* 🚨 No Records Styling */
+    .no-records {
+        text-align: center;
+        font-size: 1.5rem;
+        color: #6c757d;
+        padding: 30px;
+        font-weight: bold;
+    }
+
+    /* 📱 Responsive Design */
+    @media (max-width: 768px) {
+        .card-container {
+            grid-template-columns: 1fr;
+        }
+
+        .btn {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    }
+</style>
+
+{% endblock %}

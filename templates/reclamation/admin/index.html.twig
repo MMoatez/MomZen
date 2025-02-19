@@ -1,0 +1,75 @@
+{% extends 'BaseBack.html.twig' %}
+
+{% block title %}Reclamation Management{% endblock %}
+
+{% block body %}
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card my-4">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                            <h6 class="text-white text-capitalize ps-3">Reclamations Management</h6>
+                        </div>
+                    </div>
+                    <div class="card-body px-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table class="table align-items-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Title</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Status</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">User</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date</th>
+                                        <th class="text-secondary opacity-7">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for reclamation in reclamations %}
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">{{ reclamation.title }}</h6>
+                                                    <p class="text-xs text-secondary mb-0">{{ reclamation.description|slice(0, 50) ~ '...' }}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-sm bg-gradient-{{ reclamation.status == 'pending' ? 'warning' : 'success' }}">
+                                                {{ reclamation.status|capitalize }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs font-weight-bold mb-0">{{ reclamation.user.email }}</p>
+                                        </td>
+                                        <td>
+                                            <span class="text-secondary text-xs font-weight-bold">{{ reclamation.createdAt|date('Y-m-d H:i') }}</span>
+                                        </td>
+                                        <td class="align-middle">
+                                            <div class="btn-group" role="group">
+                                                <a href="{{ path('app_reclamation_admin_show', {'id': reclamation.id}) }}" class="btn btn-link text-info px-3 mb-0">
+                                                    <i class="material-icons text-sm me-2">visibility</i>View
+                                                </a>
+                                                {% if reclamation.status == 'pending' %}
+                                                    <a href="{{ path('app_response_new', {'id': reclamation.id}) }}" class="btn btn-link text-primary px-3 mb-0">
+                                                        <i class="material-icons text-sm me-2">reply</i>Respond
+                                                    </a>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="5" class="text-center">No reclamations found</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %} 

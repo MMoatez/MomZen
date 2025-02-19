@@ -60,14 +60,7 @@
         <hr class="horizontal light mt-0 mb-2">
         <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
         <ul class="navbar-nav">
-            <li class="nav-item">
-            <a class="nav-link text-white " href="pages/dashboard.html">
-                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="material-icons opacity-10">dashboard</i>
-                </div>
-                <span class="nav-link-text ms-1">Dashboard</span>
-            </a>
-            </li>
+            
             <li class="nav-item">
             <a class="nav-link text-white " href="{{ path('app_user_index')}}">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -79,46 +72,47 @@
             <li class="nav-item">
     <a class="nav-link text-white" href="{{ path('app_forum_backindex') }}">
         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="material-icons opacity-10">forum</i> <!-- Icône pour le forum -->
+            <i class="material-icons opacity-10">forum</i>
         </div>
         <span class="nav-link-text ms-1">Forum</span>
     </a>
 </li>
             <li class="nav-item">
-            <a class="nav-link text-white " href="pages/virtual-reality.html">
+            <a class="nav-link text-white" href="{{ path('app_reclamation_admin_index') }}">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="material-icons opacity-10">view_in_ar</i>
+                    <i class="material-icons opacity-10">report_problem</i>
                 </div>
-                <span class="nav-link-text ms-1">Virtual Reality</span>
+                <span class="nav-link-text ms-1">Reclamations</span>
             </a>
             </li>
             <li class="nav-item">
-            <a class="nav-link text-white " href="pages/rtl.html">
+            <a class="nav-link text-white" href="{{ path('app_blog_admin_index') }}">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
+                    <i class="material-icons opacity-10">article</i>
                 </div>
-                <span class="nav-link-text ms-1">RTL</span>
+                <span class="nav-link-text ms-1">Articles</span>
             </a>
             </li>
             <li class="nav-item">
-            <a class="nav-link text-white " href="pages/notifications.html">
-                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="material-icons opacity-10">notifications</i>
-                </div>
-                <span class="nav-link-text ms-1">Notifications</span>
-            </a>
-            </li>
-            <li class="nav-item mt-3">
-            <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
+            <a class="nav-link text-white" href="{{ path('app_ambulance_') }}">
+        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons opacity-10">local_shipping</i> <!-- Icône pour les ambulances -->
+        </div>
+        <span class="nav-link-text ms-1">Ambulance</span>
+    </a>
             </li>
             <li class="nav-item">
-            <a class="nav-link text-white " href="pages/profile.html">
+            <a class="nav-link text-white " href="{{ path('app_back_dossier_medical_index_admin')}}">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="material-icons opacity-10">person</i>
+                <i class="material-icons opacity-10">table_view</i>
                 </div>
-                <span class="nav-link-text ms-1">Profile</span>
+                <span class="nav-link-text ms-1">Dossier_Medicale</span>
             </a>
             </li>
+            <li class="nav-item">
+            
+            </li>
+            
            
         </ul>
         </div>
@@ -140,11 +134,17 @@
 
 
 
-                {# Vérification si l'utilisateur est un administrateur #}
+                {# Vérification si l'utilisateur est un administrateur 
+                {% if 'ROLE_ADMIN' in app.user.roles %}
+                    <a class="btn btn-warning ml-lg-3" href="{{ path('app_homme') }}">Front Office</a>
+                {% endif %}#}
+                
+            
                 {% if 'ROLE_ADMIN' in app.user.roles %}
                     <a class="btn btn-warning ml-lg-3" href="{{ path('app_homme') }}">Front Office</a>
                 {% endif %}
             
+
                 <li class="nav-item d-flex align-items-center">
                 <a href="{{ path('app_logout')}}" class="nav-link text-body font-weight-bold px-0">
                     <i class="fa fa-user me-sm-1"></i>

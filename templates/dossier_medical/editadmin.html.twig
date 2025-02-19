@@ -1,0 +1,184 @@
+{% extends 'BaseBack.html.twig' %}
+
+{% block title %}Edit DossierMedical{% endblock %}
+
+{% block body %}
+<style>
+        /* styles.css (intégré dans le même fichier) */
+
+        /* Style général pour le formulaire */
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style des labels */
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* Style des champs de saisie */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+
+        /* Effet focus sur les champs */
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #007bff;
+            box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+        }
+
+        /* Bouton de mise à jour */
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        /* Effet hover sur le bouton */
+        button:hover {
+            background: #0056b3;
+        }
+
+        /* Bouton de suppression */
+        form[action*="delete"] button {
+            background: #dc3545;
+        }
+
+        /* Effet hover pour le bouton de suppression */
+        form[action*="delete"] button:hover {
+            background: #b02a37;
+        }
+
+        /* Centrer le titre */
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+                    <h2 class="text-center mb-4">Modifier DossierMedical</h2>
+
+{{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'form-container'}}) }}
+
+    <div class="form-group">
+        {{ form_label(form.grosses_semaine) }}
+        {{ form_widget(form.grosses_semaine, {'attr': {'class': 'form-control'}}) }}
+        <div class="form-errors">
+            {{ form_errors(form.grosses_semaine) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.symptotes) }}
+        {{ form_widget(form.symptotes, {'attr': {'class': 'form-control'}}) }}
+        <div class="form-errors">
+            {{ form_errors(form.symptotes) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.patient) }}
+        {{ form_widget(form.patient, {'attr': {'class': 'form-control'}}) }}
+        <div class="form-errors">
+            {{ form_errors(form.patient) }}
+        </div>
+    </div>
+
+  <div style="display: flex; justify-content: space-between;">
+    <div class="form-group">
+                <button type="back" class="btn btn-light">    <a href="{{ path('app_dossier_medical_index_admin') }}">back to list</a>
+
+    </div>
+            <button type="submit" class="btn btn-primary">{{ button_label|default('Modifier') }}</button>
+
+</button>
+
+
+  </div>
+    {{ form_end(form) }}
+     <style>
+        /* Style pour le formulaire */
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-control:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+        }
+
+        .form-errors {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .form-errors li {
+            margin: 5px 0;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #45a049;
+        }
+
+        .btn-link {
+            background: none;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .btn-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+{% endblock %}

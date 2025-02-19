@@ -1,0 +1,159 @@
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Rendezvous {% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="title">📅 Mes Rendez-vous</h1>
+
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Adresse</th>
+                    <th>Domicile</th>
+                    <th>État</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for rendezvou in rendezvous %}
+                <tr>
+                    <td>{{ rendezvou.id }}</td>
+                    <td>{{ rendezvou.date ? rendezvou.date|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ rendezvou.adresse }}</td>
+                    <td>
+                        {% if rendezvou.domicile %}
+                            ✅ Oui
+                        {% else %}
+                            ❌ Non
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rendezvou.realise %}
+                            <span class="status completed">✔ Réalisé</span>
+                        {% else %}
+                            <a href="{{ path('app_dossiermedical_index', {rendezvousId: rendezvou.id, patientId: rendezvou.idpatient.id, time: 'now'|date('U') }) }}" class="btn btn-success">
+                                📌 Marquer comme réalisé
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('app_rendezvous_show', {'id': rendezvou.id}) }}" class="btn btn-primary">👁 Voir</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="no-data">Aucun rendez-vous trouvé.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{# 🎨 CSS Styling #}
+<style>
+    /* 🌟 Center the container */
+    .container {
+        max-width: 900px;
+        margin: auto;
+        padding: 20px;
+        text-align: center;
+    }
+
+    /* 🏆 Title */
+    .title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #2d6a4f;
+        margin-bottom: 1.5rem;
+    }
+
+    /* 🎨 Table Styling */
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 🏷 Table Header */
+    .table thead tr {
+        background-color: #2d6a4f;
+        color: white;
+        font-size: 1rem;
+    }
+
+    .table th, .table td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* 🎯 Alternate Row Colors */
+    .table tbody tr:nth-child(odd) {
+        background-color: #f8f8f8;
+    }
+
+    /* 🚀 Hover Effect */
+    .table tbody tr:hover {
+        background-color: #c8e6c9;
+        transition: 0.3s ease-in-out;
+    }
+
+    /* ❌ No Data Styling */
+    .no-data {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #e74c3c;
+    }
+
+    /* ✅ Status Labels */
+    .status {
+        font-weight: bold;
+        padding: 5px 10px;
+        border-radius: 8px;
+    }
+    
+    .completed {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    /* 🟢 Button Styles */
+    .btn {
+        text-decoration: none;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        transition: 0.3s ease-in-out;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+</style>
+
+{% endblock %}

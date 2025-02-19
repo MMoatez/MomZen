@@ -3,6 +3,119 @@
 {% block title %}Forum index{% endblock %}
 
 {% block body %}
+ <style>
+        /* Style général pour la page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Style général pour la table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 16px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* Style des en-têtes de table */
+        th {
+            background-color: #343a40;
+            color: #fff;
+            text-align: left;
+            padding: 12px;
+        }
+
+        /* Style des cellules de la table */
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            vertical-align: middle;
+        }
+
+        /* Effet hover pour les lignes de la table */
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Style des images */
+        td img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        /* Style des liens d'action */
+        a {
+            color: #007bff;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        /* Effet hover pour les liens */
+        a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Style des boutons spécifiques */
+        .btn-show {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .btn-edit {
+            background-color: #ffc107;
+            color: white;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        /* Effet hover pour les boutons */
+        .btn-show:hover {
+            background-color: #138496;
+        }
+
+        .btn-edit:hover {
+            background-color: #e0a800;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        /* Style pour le bouton de création */
+        .create-new {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        /* Effet hover pour le bouton de création */
+        .create-new:hover {
+            background-color: #218838;
+        }
+    </style>
     <h1>Forum index</h1>
 
     <table class="table">

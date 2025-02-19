@@ -1,0 +1,198 @@
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Rendezvous{% endblock %}
+
+{% block body %}
+    <!-- ✅ Ensure FontAwesome is loaded -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        /* Card container */
+        .card {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #f9fff9;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* Table Container */
+        .table-container {
+            overflow-x: auto; /* Responsive table */
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .table thead {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+        }
+
+        .table th, .table td {
+            padding: 15px;
+            text-align: center;
+            font-size: 15px;
+            color: #333;
+        }
+
+        /* Alternating Row Colors */
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f9f2;
+        }
+
+        .table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        .table tbody tr:hover {
+            background-color: #e8f5e8;
+            transition: background 0.3s ease-in-out;
+        }
+
+        /* Action Buttons */
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.3s ease;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            width: 85px;
+        }
+
+        .btn-show {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-show:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-edit {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background-color: #e67e22;
+        }
+
+        /* Icons for "Domicile" */
+        .icon-yes {
+            color: #2ecc71; /* Green */
+            font-size: 20px;
+        }
+
+        .icon-no {
+            color: #e74c3c; /* Red */
+            font-size: 20px;
+        }
+
+        /* Primary Button */
+        .btn-primary {
+            display: inline-block;
+            margin-top: 15px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: #388E3C;
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+
+        /* Responsive Table */
+        @media (max-width: 768px) {
+            .table th, .table td {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+    </style>
+
+    <div class="card">
+        <h1>Rendezvous</h1>
+
+        {% if noRendezvous %}
+            <p>Aucun rendez-vous trouvé.</p>
+            <a href="{{ path('app_rendezvous_new') }}" class="btn-primary">Prendre un Rendez-vous</a>
+        {% else %}
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Date</th>
+                            <th>Adresse</th>
+                            <th>Domicile</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for rendezvou in rendezvous %}
+                        <tr>
+                            <td>{{ rendezvou.id }}</td>
+                            <td>{{ rendezvou.date ? rendezvou.date|date('Y-m-d H:i:s') : '' }}</td>
+                            <td>{{ rendezvou.adresse }}</td>
+                            <td>
+                                {% if rendezvou.domicile %}
+                                    <i class="fas fa-check-circle icon-yes"></i> <!-- ✅ Fixed Green check -->
+                                {% else %}
+                                    <i class="fas fa-times-circle icon-no"></i> <!-- ❌ Fixed Red cross -->
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ path('app_rendezvous_show', {'id': rendezvou.id}) }}" class="btn-action btn-show">
+                                    <i class="fas fa-eye"></i> Show
+                                </a>
+                                <a href="{{ path('app_rendezvous_edit', {'id': rendezvou.id}) }}" class="btn-action btn-edit">
+                                    <i class="fas fa-pen"></i> Edit
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5">No records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <a href="{{ path('app_rendezvous_new') }}" class="btn-primary">Prendre un Rendez-vous</a>
+        {% endif %}
+    </div>
+
+{% endblock %}

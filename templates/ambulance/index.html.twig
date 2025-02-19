@@ -1,0 +1,34 @@
+{% extends 'Basefront.html.twig' %}
+{% block title %}Gestion des Ambulances{% endblock %}
+
+{% block body %}
+    <h1>Gestion des Ambulances</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Chauffeur</th>
+                <th>Immatriculation</th>
+                <th>Marque</th>
+                <th>Modèle</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ambulance in ambulances %}
+                <tr>
+                    <td>{{ ambulance.id }}</td>
+                    <td>{{ ambulance.chauffeur.nom }} {{ ambulance.chauffeur.prenom }}</td>
+                    <td>{{ ambulance.immatriculation }}</td>
+                    <td>{{ ambulance.marque }}</td>
+                    <td>{{ ambulance.modele }}</td>
+                    <td>
+                        <a href="{{ path('app_ambulance_edit', {'id': ambulance.id}) }}" class="btn btn-warning">Modifier</a>
+                        <a href="{{ path('app_ambulance_delete', {'id': ambulance.id}) }}" class="btn btn-danger">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('app_ambulance_new') }}" class="btn btn-primary">Ajouter une Ambulance</a>
+{% endblock %}

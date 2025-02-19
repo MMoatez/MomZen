@@ -1,0 +1,159 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Détails de la Consultation{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="title">📑 Détails de la Consultation</h1>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>🆔 Consultation #{{ consultation.id }}</h3>
+        </div>
+
+        <div class="card-body">
+            <p class="card-text">
+                <strong>👨‍⚕️ Médecin :</strong> 
+                {{ consultation.medecin ? consultation.medecin.prenom ~ ' ' ~ consultation.medecin.nom : 'N/A' }}
+            </p>
+
+            <p class="card-text">
+                <strong>📁 Dossier Médical :</strong> 
+                #{{ consultation.dossiermedical.id }}
+            </p>
+
+            <p class="card-text">
+                <strong>📜 Ordonnance :</strong> 
+                {{ consultation.ordonnance }}
+            </p>
+        </div>
+
+        <div class="card-footer">
+            <a href="{{ path('app_consultation') }}" class="btn btn-secondary">🔙 Retour</a>
+            <a href="{{ path('app_consultation_edit', {'id': consultation.id}) }}" class="btn btn-warning">✏ Modifier</a>
+            <form method="post" action="{{ path('app_consultation_delete', {'id': consultation.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette consultation ?');" style="display:inline;">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ consultation.id) }}">
+                <button type="submit" class="btn btn-danger">🗑 Supprimer</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{# 🎨 CSS Styling #}
+<style>
+    .container {
+        max-width: 700px;
+        margin: auto;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #2d6a4f;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+
+    .card {
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        border-radius: 12px;
+        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+        overflow: hidden;
+        border: 1px solid #e0e0e0;
+    }
+
+    .card-header {
+        background-color: #2d6a4f;
+        color: white;
+        padding: 15px;
+        font-size: 1.3rem;
+        font-weight: bold;
+        text-align: center;
+        text-transform: uppercase;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+
+    .card-body {
+        padding: 20px;
+        font-size: 1rem;
+        line-height: 1.6;
+        text-align: left;
+        color: #444;
+    }
+
+    .card-text {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+
+    .card-footer {
+        padding: 16px;
+        text-align: center;
+        background-color: #f8f9fa;
+        border-top: 1px solid #ddd;
+    }
+
+    .btn {
+        text-decoration: none;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 1rem;
+        margin: 5px;
+        transition: 0.3s ease-in-out;
+        display: inline-block;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background-color: #545b62;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        color: black;
+    }
+
+    .btn-warning:hover {
+        background-color: #e0a800;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    .btn-danger:focus {
+        outline: none;
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 10px;
+        }
+
+        .card {
+            padding: 1rem;
+        }
+
+        .btn {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    }
+</style>
+
+{% endblock %}

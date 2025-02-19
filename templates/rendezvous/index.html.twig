@@ -1,0 +1,61 @@
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Rendezvous {% endblock %}
+
+{% block body %}
+    <h1>Rendezvous </h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Adresse</th>
+                <th>Domicile</th>
+                <th>Etat</th>
+                <th>Actions</th>
+
+            </tr>
+        </thead>
+        <tbody>
+        {% for rendezvou in rendezvouses %}
+            <tr>
+                <td>{{ rendezvou.id }}</td>
+                <td>{{ rendezvou.date ? rendezvou.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ rendezvou.adresse }}</td>
+                 <td>
+            {% if rendezvou.domicile %}
+                Oui
+            {% else %}
+                 Non
+            {% endif %}
+        </td>
+
+                 <td>
+                
+          {% if rendezvou.realise %}
+    ✅ Réalisé
+{% else %}
+    <a href="{{ path('app_dossiermedical_index', {rendezvousId: rendezvou.id, time: "now"|date('U') }) }}" class="btn btn-success">
+        Marquer comme réalisé
+    </a>
+{% endif %}
+
+
+        </td>
+        
+                <td>
+                    <a href="{{ path('app_rendezvous_show', {'id': rendezvou.id}) }}">show</a>
+                    <a href="{{ path('app_rendezvous_edit', {'id': rendezvou.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_rendezvous_new') }}">Create new</a>
+{% endblock %}

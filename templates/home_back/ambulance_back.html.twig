@@ -1,0 +1,61 @@
+{% extends 'Baseback.html.twig' %}
+
+{% block title %}Gestion des Ambulances{% endblock %}
+
+{% block body %}
+    <h1>Gestion des Ambulances</h1>
+
+    {# Flash messages for success or error notifications #}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {# Table to display ambulances #}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Chauffeur</th>
+                <th>Immatriculation</th>
+                <th>Marque</th>
+                <th>Modèle</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ambulance in ambulances %}
+                <tr>
+                    <td>{{ ambulance.id }}</td>
+                    <td>
+                        {% if ambulance.chauffeur %}
+                            {{ ambulance.chauffeur.nom }} {{ ambulance.chauffeur.prenom }}
+                        {% else %}
+                            <span class="text-muted">Aucun chauffeur assigné</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ ambulance.immatriculation }}</td>
+                    <td>{{ ambulance.marque }}</td>
+                    <td>{{ ambulance.modele }}</td>
+                    <td>
+                        <a href="{{ path('app_ambulance_edit', {'id': ambulance.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+                        <a href="{{ path('app_ambulance_delete', {'id': ambulance.id}) }}" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette ambulance ?');">Supprimer</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">Aucune ambulance trouvée.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {# Button to add a new ambulance #}
+    <a href="{{ path('app_ambulance_new') }}" class="btn btn-primary">Ajouter une Ambulance</a>
+{% endblock %}

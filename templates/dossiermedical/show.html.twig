@@ -1,0 +1,162 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Dossier Médical{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="title">📁 Dossier Médical #{{ dossiermedical.id }}</h1>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>📝 Historique Médical</h3>
+        </div>
+
+        <div class="card-body">
+            <p class="card-text"><strong>📜 Historique :</strong> {{ dossiermedical.historique }}</p>
+
+            <p class="card-text">
+    <strong>👤 Patient :</strong>
+    {{ dossiermedical.idpatient ? dossiermedical.idpatient.prenom ~ ' ' ~ dossiermedical.idpatient.nom : 'N/A' }}
+</p>
+<p class="card-text">
+    <strong>📞 Téléphone :</strong>
+    {{ dossiermedical.idpatient ? dossiermedical.idpatient.numTel : 'N/A' }}
+</p>
+
+
+            <h5 class="card-title">📅 Rendez-vous ID</h5>
+            <p class="card-text">{{ rendezvousId }}</p>
+
+            <h5 class="card-title">📂 Dossier Médical ID</h5>
+            <p class="card-text">{{ dossiermedical.id }}</p>
+        </div>
+
+        <div class="card-footer">
+            <a href="{{ path('app_dossiermedical_index', {'patientId': patientId, 'rendezvousId': rendezvousId}) }}" class="btn btn-secondary">🔙 Retour</a>
+            <a href="{{ path('app_dossiermedical_edit', {'patientId': patientId, 'rendezvousId': rendezvousId, 'id': dossiermedical.id}) }}" class="btn btn-warning">✏ Modifier</a>
+            {{ include('dossiermedical/_delete_form.html.twig', {'patientId': patientId, 'rendezvousId': rendezvousId, 'dossiermedical': dossiermedical}) }}
+        </div>
+    </div>
+</div>
+
+{# 🎨 CSS Styling #}
+<style>
+    /* 🌟 General Container Styling */
+    .container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #2d6a4f;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+
+    /* 📌 Card Styling */
+    .card {
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        border-radius: 12px;
+        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+        overflow: hidden;
+        border: 1px solid #e0e0e0;
+    }
+
+    .card:hover {
+        transform: scale(1.02);
+        box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-header {
+        background-color: #2d6a4f;
+        color: white;
+        padding: 15px;
+        font-size: 1.3rem;
+        font-weight: bold;
+        text-align: center;
+        text-transform: uppercase;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+
+    .card-body {
+        padding: 20px;
+        font-size: 1rem;
+        line-height: 1.6;
+        text-align: left;
+        color: #444;
+    }
+
+    .card-text {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+
+    .card-footer {
+        padding: 16px;
+        text-align: center;
+        background-color: #f8f9fa;
+        border-top: 1px solid #ddd;
+    }
+
+    /* 🎯 Button Styling */
+    .btn {
+        text-decoration: none;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 1rem;
+        margin: 5px;
+        transition: 0.3s ease-in-out;
+        display: inline-block;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background-color: #545b62;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        color: black;
+    }
+
+    .btn-warning:hover {
+        background-color: #e0a800;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    /* 📱 Responsive Design */
+    @media (max-width: 768px) {
+        .container {
+            padding: 10px;
+        }
+
+        .card {
+            padding: 1rem;
+        }
+
+        .btn {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    }
+</style>
+
+{% endblock %}

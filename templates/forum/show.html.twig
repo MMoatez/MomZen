@@ -3,9 +3,88 @@
 {% block title %}Forum{% endblock %}
 
 {% block body %}
+ <style>
+        /* styles.css (intégré dans le même fichier) */
+
+        /* Style général pour le formulaire */
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+        ul{
+            list-style-type: none;
+            
+        }
+
+        /* Style des labels */
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* Style des champs de saisie */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+
+        /* Effet focus sur les champs */
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #007bff;
+            box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+        }
+
+        /* Bouton de mise à jour */
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        /* Effet hover sur le bouton */
+        button:hover {
+            background: #0056b3;
+        }
+
+        /* Bouton de suppression */
+        form[action*="delete"] button {
+            background: #dc3545;
+        }
+
+        /* Effet hover pour le bouton de suppression */
+        form[action*="delete"] button:hover {
+            background: #b02a37;
+        }
+
+        /* Centrer le titre */
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
     <h1>Forum</h1>
 
-    <table class="table">
+    <CENTER><table class="table">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -50,7 +129,7 @@
             {% endfor %}
         </ul>
     {% else %}
-        <p>Aucun commentaire pour ce forum.</p>
+        <p>Aucun commentaire pour ce forum</p>
     {% endif %}
 
     <h2>Ajouter un commentaire</h2>

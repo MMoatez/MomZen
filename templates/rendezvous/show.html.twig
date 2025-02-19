@@ -1,0 +1,154 @@
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Détails du Rendezvous{% endblock %}
+
+{% block body %}
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        /* Card Container */
+        .card {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #f9fff9;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* Table */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th, .table td {
+            padding: 14px;
+            text-align: left;
+            font-size: 16px;
+        }
+
+        .table th {
+            background-color: #4CAF50;
+            color: white;
+            width: 40%;
+        }
+
+        .table td {
+            background-color: #f2f9f2;
+            color: #333;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.3s ease;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .btn-edit {
+            background-color: #f39c12; /* Orange */
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background-color: #e67e22;
+        }
+
+        .btn-delete {
+            background-color: #e74c3c; /* Red */
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #c0392b;
+        }
+
+        /* Icons */
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+    </style>
+
+    <div class="card">
+        <h1>Détails du Rendezvous</h1>
+
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th><i class="fa-solid fa-hashtag"></i> ID</th>
+                    <td>{{ rendezvou.id }}</td>
+                </tr>
+                <tr>
+                    <th><i class="fa-solid fa-calendar"></i> Date</th>
+                    <td>{{ rendezvou.date ? rendezvou.date|date('Y-m-d H:i:s') : 'Non définie' }}</td>
+                </tr>
+                <tr>
+                    <th><i class="fa-solid fa-map-marker-alt"></i> Adresse</th>
+                    <td>{{ rendezvou.adresse }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="button-group">
+
+             {% if app.user %}
+                        {% if 'ROLE_USER' in app.user.roles %}
+            <!-- Modifier Button -->
+            <a href="{{ path('app_rendezvous_edit', {'id': rendezvou.id}) }}" class="btn btn-edit">
+                <i class="fa-solid fa-pen"></i> Modifier
+            </a>
+
+            <!-- Supprimer Button inside a Form -->
+            <form id="delete-form" action="{{ path('app_rendezvous_delete', {'id': rendezvou.id}) }}" method="post">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ rendezvou.id) }}">
+                <button type="submit" class="btn btn-delete" onclick="return confirmDelete(event);">
+                    <i class="fa-solid fa-trash"></i> Supprimer
+                </button>
+            </form>
+                        {% endif %}
+            {% endif %}
+        </div>
+
+
+    </div>
+
+    <script>
+        function confirmDelete(event) {
+            event.preventDefault(); // Prevent form from submitting immediately
+
+            if (confirm("Êtes-vous sûr de vouloir supprimer ce rendez-vous ? Cette action est irréversible !")) {
+                document.getElementById('delete-form').submit(); // Submit the form if confirmed
+            }
+        }
+    </script>
+{% endblock %}

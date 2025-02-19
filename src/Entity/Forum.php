@@ -26,6 +26,7 @@ class Forum
         match: false,
         message: "Le mot 'zut' est interdit dans le titre."
     )]
+    
     private ?string $titre = null;
 
     #[ORM\Column(type: 'text')]
@@ -35,6 +36,7 @@ class Forum
         match: false,
         message: "Le mot 'zut' est interdit dans le contenu."
     )]
+    
     private ?string $contenu = null;
 
     #[ORM\Column(length: 255, nullable: true)]

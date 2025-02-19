@@ -1,0 +1,118 @@
+{% extends 'BaseBack.html.twig' %}
+
+{% block title %}Edit Article{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const editor = document.querySelector('[data-editor="true"]');
+            if (editor) {
+                ClassicEditor
+                    .create(editor, {
+                        // CKEditor configuration
+                        removePlugins: ['CKFinderUploadAdapter', 'CKFinder', 'EasyImage', 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload'],
+                    })
+                    .then(editor => {
+                        // Handle form submission
+                        editor.model.document.on('change:data', () => {
+                            const data = editor.getData();
+                            document.querySelector('#article_content').value = data;
+                        });
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card my-4">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                            <h6 class="text-white text-capitalize ps-3">Edit Article</h6>
+                        </div>
+                    </div>
+                    <div class="card-body px-4">
+                        {{ form_start(form) }}
+                            <div class="input-group input-group-outline mb-4 {% if form_errors(form.title) %}has-danger{% endif %}">
+                                {{ form_label(form.title, null, {
+                                    'label_attr': {
+                                        'class': 'form-label'
+                                    }
+                                }) }}
+                                {{ form_widget(form.title) }}
+                                {% if form_errors(form.title) %}
+                                    <div class="text-danger form-text">
+                                        {{ form_errors(form.title) }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="input-group input-group-outline mb-4 {% if form_errors(form.content) %}has-danger{% endif %}">
+                                {{ form_label(form.content, null, {
+                                    'label_attr': {
+                                        'class': 'form-label'
+                                    }
+                                }) }}
+                                {{ form_widget(form.content) }}
+                                {% if form_errors(form.content) %}
+                                    <div class="text-danger form-text">
+                                        {{ form_errors(form.content) }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="input-group input-group-outline mb-4 {% if form_errors(form.image) %}has-danger{% endif %}">
+                                {{ form_label(form.image, null, {
+                                    'label_attr': {
+                                        'class': 'form-label'
+                                    }
+                                }) }}
+                                {% if article.image %}
+                                    <div class="mb-2">
+                                        <img src="{{ asset('uploads/blog/' ~ article.image) }}" alt="Current image" class="img-thumbnail" style="max-width: 200px">
+                                    </div>
+                                {% endif %}
+                                {{ form_widget(form.image) }}
+                                {% if form_errors(form.image) %}
+                                    <div class="text-danger form-text">
+                                        {{ form_errors(form.image) }}
+                                    </div>
+                                {% endif %}
+                                <small class="form-text text-muted">
+                                    Leave empty to keep the current image. Allowed file types: JPG, PNG. Max size: 1MB
+                                </small>
+                            </div>
+
+                            <div class="input-group input-group-outline mb-4 {% if form_errors(form.status) %}has-danger{% endif %}">
+                                {{ form_label(form.status, null, {
+                                    'label_attr': {
+                                        'class': 'form-label'
+                                    }
+                                }) }}
+                                {{ form_widget(form.status) }}
+                                {% if form_errors(form.status) %}
+                                    <div class="text-danger form-text">
+                                        {{ form_errors(form.status) }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-40 mt-4 mb-0">Update Article</button>
+                                <a href="{{ path('app_blog_admin_index') }}" class="btn btn-lg bg-gradient-info btn-lg w-40 mt-4 mb-0">Back to List</a>
+                            </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %} 

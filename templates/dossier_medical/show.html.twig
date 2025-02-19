@@ -1,0 +1,236 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %}Dossier Médical{% endblock %}
+
+{% block body %}
+<style>
+        /* styles.css (intégré dans le même fichier) */
+
+        /* Style général pour le formulaire */
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style des labels */
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* Style des champs de saisie */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+
+        /* Effet focus sur les champs */
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #007bff;
+            box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+        }
+
+        /* Bouton de mise à jour */
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        /* Effet hover sur le bouton */
+        button:hover {
+            background: #0056b3;
+        }
+
+        /* Bouton de suppression */
+        form[action*="delete"] button {
+            background: #dc3545;
+        }
+
+        /* Effet hover pour le bouton de suppression */
+        form[action*="delete"] button:hover {
+            background: #b02a37;
+        }
+
+        /* Centrer le titre */
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+    <div class="container">
+        <h1 class="page-title">Dossier Médical</h1>
+
+        <div class="card">
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ dossier_medical.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Date de Création</th>
+                            <td>{{ dossier_medical.datecreation ? dossier_medical.datecreation|date('Y/m/d H:i:s') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Grossesse (semaine)</th>
+                            <td>{{ dossier_medical.grossesSemaine }}</td>
+                        </tr>
+                        <tr>
+                            <th>Symptômes</th>
+                            <td>{{ dossier_medical.symptotes }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-footer">
+                <div class="actions">
+                    <a href="{{ path('app_dossier_medical_index') }}" class="btn btn-back">Retour à la liste</a>
+                    <a href="{{ path('app_dossier_medical_edit', {'id': dossier_medical.id}) }}" class="btn btn-warning">Modifier</a>
+                    <a "{{ path('app_dossier_medical_delete', {'id': dossier_medical.id}) }}" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /* Style général de la page */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 30px;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 16px;
+            color: #555;
+        }
+
+        th {
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Carte Footer */
+        .card-footer {
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-top: 1px solid #ddd;
+        }
+
+        /* Boutons d'action */
+        .actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn-back {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-back:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-edit {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background-color: #e67e22;
+            transform: translateY(-2px);
+        }
+
+        /* Style pour le formulaire de suppression */
+        .btn-delete {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #c0392b;
+        }
+    </style>
+{% endblock %}
