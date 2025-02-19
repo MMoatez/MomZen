@@ -1,0 +1,44 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %}Liste des Ambulances{% endblock %}
+
+{% block body %}
+    <h1>Liste des Ambulances</h1>
+
+    <a href="{{ path('app_ambulance_new') }}" class="btn btn-success">Ajouter une Ambulance</a>
+
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Immatriculation</th>
+                <th>Marque</th>
+                <th>Modèle</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ambulance in ambulances %}
+                <tr>
+                    <td>{{ ambulance.id }}</td>
+                    <td>{{ ambulance.immatriculation }}</td>
+                    <td>{{ ambulance.marque }}</td>
+                    <td>{{ ambulance.modele }}</td>
+                    <td>
+                        <a href="{{ path('app_ambulance_show', {'id': ambulance.id}) }}" class="btn btn-info">Voir</a>
+                        <a href="{{ path('app_ambulance_edit', {'id': ambulance.id}) }}" class="btn btn-warning">Modifier</a>
+                        <form method="post" action="{{ path('app_ambulance_delete', {'id': ambulance.id}) }}" style="display:inline;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ ambulance.id) }}">
+                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+
+
+{% endblock %}

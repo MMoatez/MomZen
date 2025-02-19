@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dossiermedical{% endblock %}
+
+{% block body %}
+    <h1>Dossiermedical</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ dossiermedical.id }}</td>
+            </tr>
+            <tr>
+                <th>Historique</th>
+                <td>{{ dossiermedical.historique }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_dossiermedical_index') }}">back to list</a>
+
+    <a href="{{ path('app_dossiermedical_edit', {'id': dossiermedical.id}) }}">edit</a>
+
+    {{ include('dossiermedical/_delete_form.html.twig') }}
+{% endblock %}

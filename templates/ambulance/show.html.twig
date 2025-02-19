@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Détails de l'Ambulance {% endblock %}
+
+{% block body %}
+<h1>Détails de l'Ambulance</h1>
+<p><strong>Immatriculation:</strong> {{ ambulance.immatriculation }}</p>
+<p><strong>Marque:</strong> {{ ambulance.marque }}</p>
+<p><strong>Modèle:</strong> {{ ambulance.modele }}</p>
+
+<a href="{{ path('app_ambulance_edit', {'id': ambulance.id}) }}" class="btn btn-warning">Modifier</a>
+<a href="{{ path('app_ambulance_index') }}" class="btn btn-secondary">Retour</a>
+{% endblock %}

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Mon Application{% endblock %}</title>
+</head>
+<body>
+    <nav>
+        <a href="{{ path('app_homme') }}">Accueil</a>
+    </nav>
+
+    <div class="container mt-4">
+        {% block body %}{% endblock %}
+    </div>
+</body>
+</html>

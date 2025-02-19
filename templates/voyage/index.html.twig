@@ -1,0 +1,53 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %} Liste des voyages {% endblock %}
+
+{% block body %}
+<h1>Liste des voyages</h1>
+<a href="{{ path('app_voyage_new') }}" class="btn btn-success">Ajouter un voyage</a>
+
+{# templates/voyage/index.html.twig #}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des Voyages</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">Liste des Voyages</h1>
+
+        {# Debugging: Dump all voyages #}
+        {% for voyage in voyages %}
+            {{ dump(voyage) }}
+        {% endfor %}
+
+        <table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Date de départ</th>
+            <th>Emplacement client</th>
+            <th>Ambulance</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for voyage in voyages %}
+            <tr>
+                <td>{{ voyage.id }}</td>
+                <td>{{ voyage.dateDepart ? voyage.dateDepart|date('d/m/Y') : '' }}</td>
+                <td>{{ voyage.emplacementClient }}</td>
+                <td>{{ voyage.ambulance }}</td>
+                <td>
+                    <a href="{{ path('app_voyage_show', {'id': voyage.id}) }}" class="btn btn-info">Voir</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+    </div>
+</body>
+</html>
+{% endblock %}
