@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques Rendez-vous{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>📊 Statistiques des Rendez-vous</h1>
+        <canvas id="rendezvousChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('rendezvousChart').getContext('2d');
+        var rendezvousChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['🏠 À domicile', '🏥 En clinique'],
+                datasets: [{
+                    label: 'Répartition des rendez-vous',
+                    data: [{{ totalDomicile }}, {{ totalClinique }}],
+                    backgroundColor: ['#28a745', '#007bff']
+                }]
+            }
+        });
+    </script>
+    <style>
+    #rendezvousChart {
+        max-width: 400px; /* Largeur maximale */
+        max-height: 400px; /* Hauteur maximale */
+        display: block;
+        margin: auto;
+    }
+</style>
+
+{% endblock %}

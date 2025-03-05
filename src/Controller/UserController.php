@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+use App\Service\QrCodeGenerator;
 
 use App\Entity\User;
 use App\Form\UserType;
@@ -11,10 +12,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Form\RegistrationFormType;
-
-
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\Label\Label;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\QrCode;
 #[Route('/user')]
 final class UserController extends AbstractController{
+  
     #[Route(name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
@@ -22,7 +28,7 @@ final class UserController extends AbstractController{
             'users' => $userRepository->findAll(),
         ]);
     }   
-
+   
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -58,19 +64,38 @@ final class UserController extends AbstractController{
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function show(User $user): Response
+    public function show(User $user, QrCodeGenerator $qrCodeGenerator): Response
     {
+        $qrCodeResult = $qrCodeGenerator->createQrCode($user);
+
         return $this->render('user/show.html.twig', [
             'user' => $user,
+            'qrCodeResult' => $qrCodeResult,
         ]);
     }
     
 
     #[Route('profile/{id}', name: 'app_profile', methods: ['GET'])]
-    public function showprofile(User $user): Response
+    public function showprofile(User $user, QrCodeGenerator $qrCodeGenerator): Response
     {
+        $qrCodeResult = $qrCodeGenerator->createQrCode($user);
+
         return $this->render('user/showprofile.html.twig', [
             'user' => $user,
+            'qrCodeResult' => $qrCodeResult,
+
+        ]);
+    }
+
+    #[Route('profile/{id}', name: 'app_profile_index', methods: ['GET'])]
+    public function indexBack(User $user, QrCodeGenerator $qrCodeGenerator): Response
+    {
+        $qrCodeResult = $qrCodeGenerator->createQrCode($user);
+
+        return $this->render('user/index.html.twig', [
+            'user' => $user,
+            'qrCodeResult' => $qrCodeResult,
+
         ]);
     }
     #[Route('/user/forum', name: 'admin_forum')]
@@ -182,12 +207,69 @@ public function forumAdmin(ForumRepository $forumRepo): Response {
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+    #[Route('delete/{id}', name: 'app_user_delete_profile', methods: ['POST'])]
+    public function deleteProfile(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->getPayload()->getString('_token'))) {
+            $entityManager->remove($user);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_homme', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+
+    #[Route('/user/sort', name: 'app_user_sort', methods: ['GET'])]
+public function sort(UserRepository $userRepository, Request $request): Response
+{
+    $order = $request->query->get('order', 'asc'); // Par défaut, tri ascendant
+    $users = $userRepository->findBy([], ['nom' => $order]);
+
+    return $this->render('user/index.html.twig', [
+        'users' => $users,
+    ]);
+}
+
+
+
+#[Route('/user/search', name: 'app_user_search', methods: ['GET'])]
+public function search(Request $request, UserRepository $userRepository): Response
+{
+    $searchTerm = $request->query->get('search', ''); // Récupère le terme de recherche depuis l'URL
+    $users = [];
+
+    if (!empty($searchTerm)) {
+        // Si un terme de recherche est fourni, filtre les utilisateurs par nom, prénom ou numéro de téléphone
+        $users = $userRepository->findBySearchTerm($searchTerm);
+    } else {
+        // Sinon, affiche tous les utilisateurs
+        $users = $userRepository->findAll();
+    }
+
+    return $this->render('user/index.html.twig', [
+        'users' => $users,
+        'searchTerm' => $searchTerm, // Passe le terme de recherche au template
+    ]);
+}
+
+
+
+
+
+
+
     private $entityManager;
+    private $qrCodeGenerator;
 
     // Inject the Doctrine service into the controller
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager,QrCodeGenerator $qrCodeGenerator)
     {
         $this->entityManager = $entityManager;
+        $this->qrCodeGenerator = $qrCodeGenerator;
+
     }
 
    

@@ -4,7 +4,29 @@
 
 {% block body %}
     <h1>Voyage index</h1>
+    {# Formulaire de recherche #}
+<form method="get" action="{{ path('app_voyage_index') }}">
+    <input type="text" name="search" value="{{ search }}" placeholder="Rechercher...">
+    <button type="submit">Rechercher</button>
+</form>
 
+{# Liens de tri #}
+<table>
+    <thead>
+        <tr>
+            <th><a href="{{ path('app_voyage_index', {'sort_by': 'emplacement_client', 'order': order == 'asc' ? 'desc' : 'asc'}) }}">Emplacement Client</a></th>
+            <th><a href="{{ path('app_voyage_index', {'sort_by': 'date_depart', 'order': order == 'asc' ? 'desc' : 'asc'}) }}">Date de Départ</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for voyage in voyages %}
+            <tr>
+                <td>{{ voyage.emplacement_client }}</td>
+                <td>{{ voyage.date_depart|date('d/m/Y H:i') }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
     <table class="table">
         <thead>
             <tr>

@@ -40,4 +40,40 @@ class UserRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+public function findBySearchTerm(string $searchTerm): array
+{
+    return $this->createQueryBuilder('u')
+        ->where('u.nom LIKE :searchTerm OR u.prenom LIKE :searchTerm OR u.numTel LIKE :searchTerm')
+        ->setParameter('searchTerm', '%' . $searchTerm . '%')
+        ->orderBy('u.nom', 'ASC')
+        ->getQuery()
+        ->getResult();
+}
+
+
+
+public function findAllSortedByNom(string $order = 'asc'): array
+{
+    return $this->createQueryBuilder('u')
+        ->orderBy('u.nom', $order)
+        ->getQuery()
+        ->getResult();
+}
+
+/**
+ * Find users by role
+ * 
+ * @param string $role The role to search for
+ * @return User[] Returns an array of User objects with the specified role
+ */
+public function findByRole(string $role): array
+{
+    $qb = $this->createQueryBuilder('u');
+    
+    return $qb->where($qb->expr()->like('u.roles', ':role'))
+        ->setParameter('role', '%"'.$role.'"%')
+        ->getQuery()
+        ->getResult();
+}
 }

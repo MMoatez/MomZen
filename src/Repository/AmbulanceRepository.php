@@ -15,7 +15,21 @@ class AmbulanceRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Ambulance::class);
     }
+    public function findBySearchAndSort(string $search = '', string $sortBy = 'id', string $order = 'asc'): array
+{
+    $qb = $this->createQueryBuilder('a');
 
+    if (!empty($search)) {
+        $qb->andWhere('a.immatriculation LIKE :search 
+            OR a.marque LIKE :search 
+            OR a.modele LIKE :search')
+           ->setParameter('search', '%' . $search . '%');
+    }
+
+    $qb->orderBy('a.' . $sortBy, $order);
+
+    return $qb->getQuery()->getResult();
+}
 //    /**
 //     * @return Ambulance[] Returns an array of Ambulance objects
 //     */

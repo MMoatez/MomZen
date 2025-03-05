@@ -5,119 +5,255 @@
 {% block body %}
     <style>
         /* Style général pour la page */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 20px;
-        }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
 
-        h1 {
-            font-size: 24px;
-            color: #333;
-            margin-bottom: 20px;
-        }
+h1 {
+    font-size: 28px;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
 
-        /* Style général pour la table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            font-size: 16px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
+/* Style pour le formulaire de recherche */
+.search-form {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
 
-        /* Style des en-têtes de table */
-        th {
-            background-color: #343a40;
-            color: #fff;
-            text-align: left;
-            padding: 12px;
-        }
+.search-form input[type="text"] {
+    padding: 12px 20px;
+    border: 2px solid #3498db;
+    border-radius: 25px;
+    width: 400px;
+    font-size: 16px;
+    color: #333;
+    background-color: #ecf0f1;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    outline: none;
+}
 
-        /* Style des cellules de la table */
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-            vertical-align: middle;
-        }
+.search-form input[type="text"]:focus {
+    border-color: #2980b9;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+    background-color: #fff;
+}
 
-        /* Effet hover pour les lignes de la table */
-        tr:hover {
-            background-color: #f1f1f1;
-        }
+.search-form .btn-search {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
 
-        /* Style des images */
-        td img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 50%;
-        }
+.search-form .btn-search:hover {
+    background: linear-gradient(135deg, #2980b9, #3498db);
+    box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+    transform: translateY(-2px);
+}
 
-        /* Style des liens d'action */
-        a {
-            color: #007bff;
-            text-decoration: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
+.search-form .btn-search:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-        /* Effet hover pour les liens */
-        a:hover {
-            background-color: #007bff;
-            color: white;
-        }
+/* Style pour les boutons de tri */
+.create-new {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #9b59b6, #8e44ad);
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    margin: 5px;
+}
 
-        /* Style des boutons spécifiques */
-        .btn-show {
-            background-color: #17a2b8;
-            color: white;
-        }
+.create-new:hover {
+    background: linear-gradient(135deg, #8e44ad, #9b59b6);
+    box-shadow: 0 6px 12px rgba(142, 68, 173, 0.3);
+    transform: translateY(-2px);
+}
 
-        .btn-edit {
-            background-color: #ffc107;
-            color: white;
-        }
+.create-new:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-        .btn-delete {
-            background-color: #dc3545;
-            color: white;
-        }
+/* Animation pour les boutons */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
 
-        /* Effet hover pour les boutons */
-        .btn-show:hover {
-            background-color: #138496;
-        }
+.create-new:hover {
+    animation: pulse 1s infinite;
+}
 
-        .btn-edit:hover {
-            background-color: #e0a800;
-        }
+/* Style pour le tableau */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 16px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
 
-        .btn-delete:hover {
-            background-color: #c82333;
-        }
+/* Style des en-têtes de table */
+th {
+    background: linear-gradient(135deg, #34495e, #2c3e50);
+    color: white;
+    text-align: left;
+    padding: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
-        /* Style pour le bouton de création */
-        .create-new {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 15px;
-            background-color: #28a745;
-            color: white;
-            border-radius: 5px;
-            text-decoration: none;
-        }
+/* Style des cellules de la table */
+td {
+    padding: 15px;
+    border-bottom: 1px solid #ecf0f1;
+    vertical-align: middle;
+}
 
-        /* Effet hover pour le bouton de création */
-        .create-new:hover {
-            background-color: #218838;
-        }
+/* Effet hover pour les lignes de la table */
+tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Style des images */
+td img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ecf0f1;
+}
+
+/* Style des liens d'action */
+a {
+    color: #3498db;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+/* Effet hover pour les liens */
+a:hover {
+    background-color: #3498db;
+    color: white;
+}
+
+/* Style des boutons spécifiques */
+.btn-show {
+    background-color: #2ecc71;
+    color: white;
+}
+
+.btn-edit {
+    background-color: #f1c40f;
+    color: white;
+}
+
+.btn-delete {
+    background-color: #e74c3c;
+    color: white;
+}
+
+/* Effet hover pour les boutons */
+.btn-show:hover {
+    background-color: #27ae60;
+}
+
+.btn-edit:hover {
+    background-color: #f39c12;
+}
+
+.btn-delete:hover {
+    background-color: #c0392b;
+}
+
+/* Style pour le bouton de création */
+.create-new {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #1abc9c, #16a085);
+    color: white;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.create-new:hover {
+    background: linear-gradient(135deg, #16a085, #1abc9c);
+    box-shadow: 0 6px 12px rgba(22, 160, 133, 0.3);
+    transform: translateY(-2px);
+}
+
+.create-new:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
     </style>
 
     <h1>User Management</h1>
+
+    <!-- Formulaire de recherche -->
+    <form action="{{ path('app_user_search') }}" method="GET" class="search-form">
+        <input type="text" name="search" placeholder="Rechercher par nom, prénom ou téléphone..." value="{{ searchTerm ?? '' }}">
+        <button type="submit" class="btn-search">Rechercher</button>
+
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        
+        <!-- Bouton de tri -->
+        <a href="{{ path('app_user_sort', {'order': 'asc'}) }}" class="create-new">
+        Trier par nom (A-Z) ↑
+        </a>
+        &emsp;
+        <a href="{{ path('app_user_sort', {'order': 'desc'}) }}" class="create-new">
+            Trier par nom (Z-A) ↓
+        </a>
+    </form>
+
 
     <table>
         <thead>
@@ -157,6 +293,8 @@
 
                 </td>
             </tr>
+
+            
         {% else %}
             <tr>
                 <td colspan="9">No records found</td>

@@ -18,6 +18,8 @@
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
             <!-- CSS Files -->
             <link id="pagestyle" href="{{asset ('BackOffice/assets/css/material-dashboard.css?v=3.1.0')}}" rel="stylesheet" />
+            <!-- Notification CSS -->
+            <link href="{{asset ('BackOffice/assets/css/notification.css')}}" rel="stylesheet" />
             {% endblock %}
 
         {% block javascripts %}
@@ -35,7 +37,8 @@
             <script src="{{asset ('BackOffice/assets/js/plugins/smooth-scrollbar.min.js')}}"></script>
             <script src="{{asset ('BackOffice/assets/js/plugins/chartjs.min.js')}}"></script>
 
-
+            <!-- Notification JS -->
+            <script src="{{asset ('BackOffice/assets/js/notifications.js')}}"></script>
 
             <!-- Github buttons -->
             <script async defer src="https://buttons.github.io/buttons.js"></script>
@@ -102,6 +105,14 @@
     </a>
             </li>
             <li class="nav-item">
+            <a class="nav-link text-white" href="{{ path('app_demande_ambulance_index') }}">
+        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons opacity-10">local_shipping</i> <!-- Icône pour les ambulances -->
+        </div>
+        <span class="nav-link-text ms-1">Demande Ambulance</span>
+    </a>
+            </li>
+            <li class="nav-item">
             <a class="nav-link text-white " href="{{ path('app_back_dossier_medical_index_admin')}}">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i class="material-icons opacity-10">table_view</i>
@@ -132,26 +143,44 @@
             <h6 class="font-weight-bolder mb-0">Dashboard</h6>
             </nav>
 
+            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+                <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+                </div>
+                <ul class="navbar-nav  justify-content-end">
+                    {% if 'ROLE_ADMIN' in app.user.roles %}
+                    <!-- Notification Icon -->
+                    <li class="nav-item px-3 d-flex align-items-center">
+                        <div class="notification-wrapper">
+                            <a href="javascript:;" class="nav-link text-body p-0" id="notification-icon">
+                                <i class="material-icons lightbulb">lightbulb</i>
+                                <span class="notification-badge" id="notification-badge" style="display: none;">0</span>
+                            </a>
+                            <!-- Notification Dropdown -->
+                            <div class="notification-dropdown" id="notification-dropdown">
+                                <div class="notification-header">
+                                    <h6>Notifications</h6>
+                                    <a href="javascript:;" class="mark-all-read" id="mark-all-read">Mark all as read</a>
+                                </div>
+                                <ul class="notification-list" id="notification-list">
+                                    <!-- Notifications will be loaded dynamically via JavaScript -->
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    {% endif %}
 
-
-                {# Vérification si l'utilisateur est un administrateur 
-                {% if 'ROLE_ADMIN' in app.user.roles %}
-                    <a class="btn btn-warning ml-lg-3" href="{{ path('app_homme') }}">Front Office</a>
-                {% endif %}#}
+                    {% if 'ROLE_ADMIN' in app.user.roles %}
+                        <a class="btn btn-warning ml-lg-3" href="{{ path('app_homme') }}">Front Office</a>
+                    {% endif %}
                 
-            
-                {% if 'ROLE_ADMIN' in app.user.roles %}
-                    <a class="btn btn-warning ml-lg-3" href="{{ path('app_homme') }}">Front Office</a>
-                {% endif %}
-            
 
-                <li class="nav-item d-flex align-items-center">
-                <a href="{{ path('app_logout')}}" class="nav-link text-body font-weight-bold px-0">
-                    <i class="fa fa-user me-sm-1"></i>
-                    <span class="d-sm-inline d-none">Log Out</span>
-                </a>
-                </li>
-            </ul>
+                    <li class="nav-item d-flex align-items-center">
+                    <a href="{{ path('app_logout')}}" class="nav-link text-body font-weight-bold px-0">
+                        <i class="fa fa-user me-sm-1"></i>
+                        <span class="d-sm-inline d-none">Log Out</span>
+                    </a>
+                    </li>
+                </ul>
             </div>
         </div>
         </nav>

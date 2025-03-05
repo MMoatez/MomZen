@@ -23,12 +23,36 @@ final class AnalyseController extends AbstractController{
     }
 
     #[Route('/dossier-medical/{id}/analyse', name: 'app_dossier_medical_analyse')]
-    public function analyse(DossierMedicall $dossierMedicall,EntityManagerInterface $entityManager): Response
+    public function analyse(DossierMedicall $dossierMedicall, EntityManagerInterface $entityManager): Response
     {
-        // Ici vous pouvez obtenir toutes les analyses liées à ce dossier médical
-        // Par exemple, en utilisant un repository pour récupérer les analyses d'un dossier médical :
-        $analyses = $entityManager->getRepository(Analyse::class)->findBy(['dossier_medicale' => $dossierMedicall]);
-
+        // Génération automatique de l'analyse si elle n'existe pas
+        $analyse = $entityManager->getRepository(Analyse::class)->findOneBy(['dossier_medicale' => $dossierMedicall]);
+        
+        if (!$analyse) {
+            $analyse = new Analyse();
+            $analyse->setDossierMedicale($dossierMedicall);
+            
+            // Calcul du risque
+            $semaines = $dossierMedicall->getGrossesSemaine();
+            $analyse->setRisqueGrosses(match(true) {
+                $semaines >= 40 => 'Risque élevé',
+                $semaines >= 30 => 'Risque modéré',
+                default => 'Risque normal'
+            });
+    
+            // Détermination urgence
+            $symptomes = strtolower($dossierMedicall->getSymptotes());
+            $urgence = str_contains($symptomes, 'douleur intense') 
+                    || str_contains($symptomes, 'saignement')
+                    || str_contains($symptomes, 'contractions');
+            $analyse->setUrgenceMedicale($urgence);
+    
+            $entityManager->persist($analyse);
+            $entityManager->flush();
+        }
+    
+        $analyses = [$analyse]; // Tableau pour garder la structure existante
+    
         return $this->render('dossier_medical/analyse.html.twig', [
             'dossier_medical' => $dossierMedicall,
             'analyses' => $analyses,

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Ambulance;
+use App\Entity\Voyage;
 use App\Form\Ambulance1Type;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,18 +13,36 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\AmbulanceRepository;
 #[Route('/ambulance')]
 final class AmbulanceController extends AbstractController{
-    #[Route(name: 'app_ambulance_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+    #[Route('/', name: 'app_ambulance_index', methods: ['GET'])]
+    #[Route('/', name: 'app_ambulance_index', methods: ['GET'])]
+    public function index(Request $request, AmbulanceRepository $ambulanceRepository): Response
     {
-        $ambulances = $entityManager
-            ->getRepository(Ambulance::class)
-            ->findAll();
-
+        // Récupération des paramètres avec valeurs par défaut
+        $search = $request->query->get('search', '');
+        $sortBy = $request->query->get('sort_by', 'id'); // 'id' par défaut
+        $order = $request->query->get('order', 'asc'); // 'asc' par défaut
+    
+        $ambulances = $ambulanceRepository->findBySearchAndSort($search, $sortBy, $order);
+    
         return $this->render('ambulance/index.html.twig', [
             'ambulances' => $ambulances,
+            'search' => $search,
+            'sort_by' => $sortBy, // Nom de variable Twig
+            'order' => $order
         ]);
     }
 
+    #[Route('/map', name: 'app_ambulance_map', methods: ['GET'])]
+    public function map(EntityManagerInterface $entityManager): Response
+    {
+        $ambulances = $entityManager->getRepository(Ambulance::class)->findAll();
+        $voyages = $entityManager->getRepository(Voyage::class)->findAll();
+    
+        return $this->render('ambulance/map.html.twig', [
+            'ambulances' => $ambulances,
+            'voyages' => $voyages,
+        ]);
+    }
     #[Route('/backambulance',name: 'app_ambulance_', methods: ['GET'])]
     public function indexxx(EntityManagerInterface $entityManager): Response
     {
@@ -76,9 +95,15 @@ final class AmbulanceController extends AbstractController{
         ]);
     }
 
-    #[Route('/{id}', name: 'app_ambulance_show', methods: ['GET'])]
-    public function show(Ambulance $ambulance): Response
+    #[Route('/ambulance/{id}', name: 'app_ambulance_show', methods: ['GET'])]
+    public function show(int $id, AmbulanceRepository $ambulanceRepository): Response
     {
+        $ambulance = $ambulanceRepository->find($id);
+    
+        if (!$ambulance) {
+            throw $this->createNotFoundException('Ambulance non trouvée');
+        }
+    
         return $this->render('ambulance/show.html.twig', [
             'ambulance' => $ambulance,
         ]);
@@ -128,5 +153,23 @@ final class AmbulanceController extends AbstractController{
             'ambulances' => $ambulances,
         ]);
     }
+    #[Route('/ambulance', name: 'app_ambulance_index', methods: ['GET'])]
+    public function index_zbotrosh(Request $request, AmbulanceRepository $ambulanceRepository): Response
+    {
+    // Récupérer les paramètres de recherche et de tri
+    $search = $request->query->get('search', '');
+    $sortBy = $request->query->get('sort_by', 'id'); // Par défaut, tri par ID
+    $order = $request->query->get('order', 'asc'); // Par défaut, ordre ascendant
+
+    // Appeler la méthode du repository pour filtrer et trier
+    $ambulances = $ambulanceRepository->findBySearchAndSort($search, $sortBy, $order);
+
+    return $this->render('ambulance/index.html.twig', [
+        'ambulances' => $ambulances,
+        'search' => $search,
+        'sort_by' => $sortBy,
+        'order' => $order,
+    ]);
+    }   
 }
 

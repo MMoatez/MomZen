@@ -13,6 +13,8 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\FileType; 
+use VictorPrdh\RecaptchaBundle\Form\ReCaptchaType;
+
 
 class RegistrationFormType extends AbstractType
 {
@@ -58,7 +60,8 @@ class RegistrationFormType extends AbstractType
                     'class' => 'form-control', // Applique une classe pour le style
                     'accept' => 'image/*', // Limite aux fichiers image
                 ],
-            ]);
+            ])
+            ->add("recaptcha", ReCaptchaType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

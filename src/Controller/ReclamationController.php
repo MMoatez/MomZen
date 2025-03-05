@@ -15,6 +15,7 @@ use App\Repository\UserRepository;
 use App\Repository\RatingRepository;
 use App\Entity\User;
 use App\Entity\Rating;
+use App\Service\NotificationService;
 
 #[Route('/reclamation')]
 final class ReclamationController extends AbstractController
@@ -48,7 +49,7 @@ final class ReclamationController extends AbstractController
 
     #[Route('/new', name: 'app_reclamation_new', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, NotificationService $notificationService): Response
     {
         $reclamation = new Reclamation();
         $form = $this->createForm(ReclamationType::class, $reclamation);
@@ -62,13 +63,16 @@ final class ReclamationController extends AbstractController
             $entityManager->persist($reclamation);
             $entityManager->flush();
 
+            // Create notification for admin users
+            $notificationService->createReclamationNotification($reclamation);
+
             $this->addFlash('success', 'Your reclamation has been submitted successfully.');
             return $this->redirectToRoute('app_reclamation_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('reclamation/new.html.twig', [
             'reclamation' => $reclamation,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 

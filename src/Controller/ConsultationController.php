@@ -10,9 +10,41 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Consultation;
 use App\Entity\Dossiermedical;
 use App\Form\ConsultationType;
-
+use App\Service\PdfService;
 final class ConsultationController extends AbstractController
 {
+    private PdfService $pdfService;
+
+    public function __construct(PdfService $pdfService)
+    {
+        $this->pdfService = $pdfService;
+    }
+
+    #[Route('/consultation/{id}/pdf', name: 'app_consultation_pdf')]
+    public function generatePdf(Consultation $consultation): Response
+    {
+        // Vérifier si l'ordonnance existe
+        if (!$consultation->getOrdonnance()) {
+            $this->addFlash('error', 'Aucune ordonnance disponible pour cette consultation.');
+            return $this->redirectToRoute('app_consultation_index');
+        }
+
+        // Contenu du PDF
+        $htmlContent = $this->renderView('consultation/pdf_template.html.twig', [
+            'consultation' => $consultation,
+        ]);
+
+        // Générer le PDF
+return $this->pdfService->generatePdf(
+            'consultation/pdf_template.html.twig',
+            ['consultation' => $consultation],
+            'ordonnance.pdf'
+        );
+        }
+
+
+
+
     #[Route('/consultations', name: 'app_consultation', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): Response
     {

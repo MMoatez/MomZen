@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+          crossorigin=""/>
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Carte des Ambulances</h1>
+        <div id="map" style="height: 70vh; width: 100%; border-radius: 10px;"></div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+            crossorigin=""></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialisation de la carte
+            const map = L.map('map').setView([36.8065, 10.1815], 13);
+
+            // Configuration de la couche OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+
+            // Ajout des ambulances
+            {% if ambulances is not empty %}
+                {% for ambulance in ambulances %}
+                    {% if ambulance.latitude and ambulance.longitude %}
+                        L.marker([{{ ambulance.latitude }}, {{ ambulance.longitude }}])
+                            .addTo(map)
+                            .bindPopup(`
+                                <b>Ambulance</b><br>
+                                Immatriculation: {{ ambulance.immatriculation }}<br>
+                                Statut: {{ ambulance.statut }}
+                            `);
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            // Ajout des voyages
+            {% if voyages is not empty %}
+                {% for voyage in voyages %}
+                    {% if voyage.ambulance and voyage.ambulance.latitude and voyage.ambulance.longitude %}
+                        L.marker([{{ voyage.ambulance.latitude }}, {{ voyage.ambulance.longitude }}], {
+                            icon: L.icon({
+                                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+                                iconSize: [25, 41],
+                                iconAnchor: [12, 41]
+                            })
+                        }).addTo(map)
+                        .bindPopup(`
+                            <b>Voyage</b><br>
+                            Client: {{ voyage.emplacementClient }}<br>
+                            Destination: {{ voyage.destination }}
+                        `);
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        });
+    </script>
+{% endblock %}

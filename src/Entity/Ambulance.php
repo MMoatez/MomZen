@@ -1,9 +1,7 @@
 <?php
 
-// src/Entity/Ambulance.php
 namespace App\Entity;
 
-use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -31,7 +29,7 @@ class Ambulance
     #[Assert\NotBlank(message: "La marque ne peut pas être vide.")]
     #[Assert\Length(
         max: 15,
-        maxMessage: "Le titre ne doit pas dépasser 15 caractères."
+        maxMessage: "La marque ne doit pas dépasser 15 caractères."
     )]
     private $marque;
 
@@ -39,9 +37,15 @@ class Ambulance
     #[Assert\NotBlank(message: "Le modèle ne peut pas être vide.")]
     #[Assert\Length(
         max: 15,
-        maxMessage: "Le titre ne doit pas dépasser 15 caractères."
+        maxMessage: "Le modèle ne doit pas dépasser 15 caractères."
     )]
     private $modele;
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $latitude = null;
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $longitude = null;
 
     // Getters et Setters
 
@@ -91,6 +95,28 @@ class Ambulance
     public function setModele(string $modele): self
     {
         $this->modele = $modele;
+        return $this;
+    }
+
+    public function getLatitude(): ?float
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(?float $latitude): self
+    {
+        $this->latitude = $latitude;
+        return $this;
+    }
+
+    public function getLongitude(): ?float
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(?float $longitude): self
+    {
+        $this->longitude = $longitude;
         return $this;
     }
 }

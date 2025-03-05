@@ -33,6 +33,8 @@
             <a href="{{ path('app_consultation_edit', {'id': consultation.id}) }}" class="btn btn-warning">✏ Modifier</a>
             <form method="post" action="{{ path('app_consultation_delete', {'id': consultation.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette consultation ?');" style="display:inline;">
                 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ consultation.id) }}">
+                
+                 <a href="{{ path('app_consultation_pdf', {'id': consultation.id}) }}" class="btn btn-danger">📄 Générer PDF</a>
                 <button type="submit" class="btn btn-danger">🗑 Supprimer</button>
             </form>
         </div>

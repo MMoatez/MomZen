@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}MomZen Notification{% endblock %}</title>
+    </head>
+    <body style="margin: 0; padding: 0; background-color: #f7f7f7; font-family: Arial, sans-serif;">
+        {% block body %}{% endblock %}
+        
+        <div style="text-align: center; padding: 20px; font-size: 12px; color: #777; margin-top: 20px;">
+            <p>© {{ "now"|date("Y") }} MomZen. All rights reserved.</p>
+            <p>This email was sent automatically. Please do not reply to this email.</p>
+        </div>
+    </body>
+</html> 

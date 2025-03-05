@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Dossiermedical;
 use App\Entity\Rendezvous;
 use App\Entity\User;
-
+use App\Service\GeminiMedicalService;
 use App\Form\DossiermedicalType;
 use App\Repository\DossiermedicalRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -125,7 +125,7 @@ use App\Repository\RendezvousRepository;
             'form' => $form,
         ]);
     }
-
+/*
     #[Route('/{patientId}/{rendezvousId}/{id}', name: 'app_dossiermedical_show', methods: ['GET'])]
     public function show($patientId, $rendezvousId, Dossiermedical $dossiermedical): Response
     {
@@ -135,7 +135,33 @@ use App\Repository\RendezvousRepository;
             'rendezvousId' => $rendezvousId
         ]);
     }
+    */
+    #[Route('/{patientId}/{rendezvousId}/{id}', name: 'app_dossiermedical_show', methods: ['GET'])]
+    public function show(
+        $patientId,
+        $rendezvousId,
+        Dossiermedical $dossiermedical,
+        GeminiMedicalService $geminiService,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $result = "Analyse en cours..."; // Default message
     
+        if ($dossiermedical->getHistorique()) {
+            try {
+                $apiResult = $geminiService->analyzeMedicalHistory($dossiermedical->getHistorique());
+                $result = $apiResult ?: "Aucune analyse disponible."; // If empty, display a fallback
+            } catch (\Exception $e) {
+                $result = "Impossible d'analyser les données pour le moment.";
+            }
+        }
+    
+        return $this->render('dossiermedical/show.html.twig', [
+            'dossiermedical' => $dossiermedical,
+            'patientId' => $patientId,
+            'rendezvousId' => $rendezvousId,
+            'result' => $result
+        ]);
+    }
 
     #[Route('/{patientId}/{rendezvousId}/{id}/edit', name: 'app_dossiermedical_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, $patientId, $rendezvousId, Dossiermedical $dossiermedical, EntityManagerInterface $entityManager): Response
@@ -176,6 +202,34 @@ use App\Repository\RendezvousRepository;
     }
     
           
+
+    
+    #[Route('/{id}/analyze', name: 'app_dossiermedical_analyze', methods: ['POST'])]
+public function analyze(
+    Dossiermedical $dossiermedical,
+    GeminiMedicalService $geminiService,
+    EntityManagerInterface $entityManager
+): Response {
+    if ($dossiermedical->getHistorique()) {
+        $result = $geminiService->analyzeMedicalHistory($dossiermedical->getHistorique());
+
+        if (isset($result['enceinte'])) {
+            $dossiermedical->setEnceinte($result['enceinte']);
+            $dossiermedical->setSemainesGrossesse($result['semaines'] ?? null);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Analyse IA effectuée avec succès !');
+        } else {
+            $this->addFlash('error', 'L’analyse IA a échoué.');
+        }
+    }
+
+    return $this->redirectToRoute('app_dossiermedical_show', [
+        'patientId' => $dossiermedical->getIdpatient()->getId(),
+        'rendezvousId' => 0, // Si besoin d'un ID de rendez-vous
+        'id' => $dossiermedical->getId(),
+    ]);
+}
 
   /*
     #[Route('/dossiermedical', name: 'app_dossiermedical_index', methods: ['GET'])]

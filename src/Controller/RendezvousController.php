@@ -20,6 +20,22 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/rendezvous')]
 final class RendezvousController extends AbstractController
 {
+
+    #[Route('/rendezvous/statistiques', name: 'app_rendezvous_statistiques')]
+    public function statistiques(RendezvousRepository $rendezvousRepository): Response
+    {
+        // Récupérer les statistiques sur "domicile"
+        $totalDomicile = $rendezvousRepository->count(['domicile' => true]);
+        $totalClinique = $rendezvousRepository->count(['domicile' => false]);
+
+        return $this->render('rendezvous/statistiques.html.twig', [
+            'totalDomicile' => $totalDomicile,
+            'totalClinique' => $totalClinique,
+        ]);
+    }
+
+
+
     #[Route(name: 'app_rendezvous_index', methods: ['GET'])]
     public function index(RendezvousRepository $rendezvousRepository): Response
     {

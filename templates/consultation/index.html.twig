@@ -30,6 +30,7 @@
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ consultation.id) }}">
     <button type="submit" class="btn btn-danger">🗑 Supprimer</button>
 </form>
+                        <a href="{{ path('app_consultation_pdf', {'id': consultation.id}) }}" class="btn btn-danger">📄 Générer PDF</a>
                     </td>
                 </tr>
             {% else %}

@@ -86,4 +86,31 @@ public function new(Request $request, EntityManagerInterface $entityManager, int
 
         return $this->redirectToRoute('app_commentaire_index', [], Response::HTTP_SEE_OTHER);
     }
+    #[Route('/{id}/like', name: 'app_commentaire_like', methods: ['POST'])]
+public function like(
+    Request $request, 
+    Commentaire $commentaire, 
+    EntityManagerInterface $entityManager
+): Response {
+    if ($this->isCsrfTokenValid('like'.$commentaire->getId(), $request->request->get('_token'))) {
+        $commentaire->incrementLikes();
+        $entityManager->flush();
+    }
+
+    return $this->redirectToRoute('app_forum_show', ['id' => $commentaire->getForum()->getId()]);
+}
+
+#[Route('/{id}/dislike', name: 'app_commentaire_dislike', methods: ['POST'])]
+public function dislike(
+    Request $request, 
+    Commentaire $commentaire, 
+    EntityManagerInterface $entityManager
+): Response {
+    if ($this->isCsrfTokenValid('dislike'.$commentaire->getId(), $request->request->get('_token'))) {
+        $commentaire->incrementDislikes();
+        $entityManager->flush();
+    }
+
+    return $this->redirectToRoute('app_forum_show', ['id' => $commentaire->getForum()->getId()]);
+}
 }

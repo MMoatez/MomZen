@@ -62,8 +62,7 @@
                             {{ form_label(registrationForm.image, "Photo de profil", {'label_attr': {'class': 'form-label'}}) }}
                             {{ form_widget(registrationForm.image, {'attr': {'class': 'form-control'}}) }}
                             {{ form_errors(registrationForm.image) }}
-                        </div>
-
+                        
 
 
 
@@ -131,6 +130,8 @@
                             </div>
                         </div>
 
+                        
+
 
                         <div class="form-check mb-3">
                             {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
@@ -139,6 +140,16 @@
                             </label>
                             {{ form_errors(registrationForm.agreeTerms) }}
                         </div>
+
+                        </div>
+                          <div class="mb-3">
+
+                        {{ form_row(registrationForm.recaptcha) }} 
+                            {# must be the same name of this put on the FormBuilder #}
+
+                            {{ form_errors(registrationForm.recaptcha) }}
+                            {# That will display the error of the captcha to user #}
+                          </div>
 
 
                         <button type="submit" class="btn btn-primary w-100">S'inscrire</button>

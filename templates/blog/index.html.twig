@@ -6,6 +6,50 @@
     <div class="page-section">
         <div class="container">
             <h1 class="text-center mb-5 wow fadeInUp">Latest Articles</h1>
+            
+            <!-- Advanced Search Form -->
+            <div class="card mb-5 wow fadeInUp">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Advanced Search</h5>
+                    <form method="get" action="{{ path('app_blog_index') }}" class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="search">Search by title or content</label>
+                                <input type="text" name="search" id="search" class="form-control" value="{{ app.request.query.get('search') }}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="author">Author</label>
+                                <select name="author" id="author" class="form-control">
+                                    <option value="">All Authors</option>
+                                    {% for author in authors|default([]) %}
+                                        <option value="{{ author.id }}" {% if app.request.query.get('author') == author.id %}selected{% endif %}>
+                                            {{ author.email }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="date_from">From date</label>
+                                <input type="date" name="date_from" id="date_from" class="form-control" value="{{ app.request.query.get('date_from') }}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="date_to">To date</label>
+                                <input type="date" name="date_to" id="date_to" class="form-control" value="{{ app.request.query.get('date_to') }}">
+                            </div>
+                        </div>
+                        <div class="col-12 text-end">
+                            <a href="{{ path('app_blog_index') }}" class="btn btn-outline-secondary">Reset</a>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
             <div class="row">
                 {% for article in articles %}
@@ -43,4 +87,4 @@
             </div>
         </div>
     </div>
-{% endblock %} 
+{% endblock %}

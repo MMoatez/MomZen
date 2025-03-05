@@ -29,6 +29,11 @@
 
             <h5 class="card-title">📂 Dossier Médical ID</h5>
             <p class="card-text">{{ dossiermedical.id }}</p>
+
+             <div class="ai-analysis-box">
+            <h5 class="ai-title">🤖 Analyse IA</h5>
+            <p class="ai-result">{{ result }}</p>
+</div>
         </div>
 
         <div class="card-footer">
@@ -41,6 +46,48 @@
 
 {# 🎨 CSS Styling #}
 <style>
+.ai-analysis-box {
+    background: #e3f2fd; /* Light blue background for emphasis */
+    border-left: 6px solid #2d6a4f; /* Green accent border */
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+}
+
+.ai-analysis-box:hover {
+    background: #d1ecf1; /* Slightly darker blue on hover */
+    border-left: 6px solid #1b4332;
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.ai-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #1b4332; /* Dark green text */
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.ai-result {
+    font-size: 1.2rem;
+    font-style: italic;
+    color: #333;
+    padding: 10px;
+    background: white;
+    border-radius: 6px;
+    box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease-in-out;
+}
+
+.ai-result:hover {
+    background: #f8f9fa;
+}
+
+
+
     /* 🌟 General Container Styling */
     .container {
         max-width: 800px;

@@ -15,6 +15,28 @@ class ForumRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Forum::class);
     }
+    public function findBySearchAndSort(?string $search = null, string $sort = 'date_desc'): array
+{
+    $qb = $this->createQueryBuilder('f');
+
+    if ($search) {
+        $qb->andWhere('f.titre LIKE :search')
+           ->setParameter('search', '%'.$search.'%');
+    }
+
+    // Gestion du tri
+    $order = ($sort === 'date_asc') ? 'ASC' : 'DESC';
+    $qb->orderBy('f.datePublication', $order);
+
+    return $qb->getQuery()->getResult();
+}
+public function findAllSortedByDate(): array
+{
+    return $this->createQueryBuilder('f')
+        ->orderBy('f.datePublication', 'DESC')
+        ->getQuery()
+        ->getResult();
+}
 
 //    /**
 //     * @return Forum[] Returns an array of Forum objects

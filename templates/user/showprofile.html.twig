@@ -1,11 +1,21 @@
 {% extends 'basefront.html.twig' %}
 
-{% block title %}Patient{% endblock %}
+{% block title %}User{% endblock %}
 
 {% block body %}
     <div class="container mt-5">
     
-        <h1 class="text-center text-primary">Patient</h1>
+<h1 class="text-center text-primary">
+    {% if 'ROLE_DOCTEUR' in app.user.roles %}
+        Docteur
+    {% elseif 'ROLE_USER' in app.user.roles %}
+        Patient
+    {% elseif 'ROLE_CHAUFFEUR' in app.user.roles %}
+        CHAUFFEUR
+    {% elseif 'ROLE_ADMIN' in app.user.roles %}
+        Admin
+    {% endif %}
+</h1>
 
         <div class="card shadow p-4">
             <table class="table table-striped">
@@ -42,6 +52,11 @@
                             {% else %}
                                 <span class="text-muted">Aucune image</span>
                             {% endif %}
+                        </td>
+                    </tr>
+                     <th>QR Code</th>
+                        <td>
+                            {{ qrCodeResult.getString() | raw }}
                         </td>
                     </tr>
                 </tbody>

@@ -14,6 +14,8 @@ class AmbulanceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+        ->add('latitude')
+    ->add('longitude')
             ->add('immatriculation')
             ->add('marque')
             ->add('modele')

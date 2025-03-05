@@ -4,113 +4,161 @@
 
 {% block body %}
     <style>
-        /* Global style */
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7fc;
-            padding: 20px;
-        }
+       /* Global style */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7fc;
+    padding: 20px;
+    color: #333;
+}
 
-        /* Title styling */
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2.5rem;
-        }
+/* Title styling */
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
 
-        /* Form Container */
-        .form-container {
-            background-color: white;
-            padding: 40px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            max-width: 1200px; /* Increased width for a larger container */
-            margin: 0 auto;
-        }
+/* Form Container */
+.form-container {
+    background-color: white;
+    padding: 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    max-width: 1200px; /* Increased width for a larger container */
+    margin: 0 auto;
+}
 
-        /* Input field styles */
-        .form-control {
-            padding: 15px;
-            font-size: 1.1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            transition: border-color 0.3s;
-        }
+/* Input field styles */
+.form-control {
+    padding: 15px;
+    font-size: 1.1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    width: 100%;
+    margin-bottom: 20px;
+}
 
-        .form-control:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
+.form-control:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
+}
 
-        /* Form label styles */
-        .form-label {
-            font-weight: bold;
-            font-size: 1.1rem;
-            color: #555;
-        }
+/* Form label styles */
+.form-label {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 10px;
+    display: block;
+}
 
-        /* Button styles */
-        .btn-update {
-            background-color: #28a745; /* Green */
-            color: white;
-            padding: 15px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            width: 100%;
-            margin-top: 20px;
-        }
+/* Button styles */
+.btn-update {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    padding: 15px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    width: 100%;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-        .btn-update:hover {
-            background-color: #218838;
-        }
+.btn-update:hover {
+    background: linear-gradient(135deg, #2980b9, #3498db);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+}
 
-        /* Back to list link style */
-        .btn-back {
-            text-decoration: none;
-            background-color: #007bff;
-            color: white;
-            padding: 15px;
-            font-size: 1.2rem;
-            border-radius: 5px;
-            display: inline-block;
-            margin-top: 20px;
-            text-align: center;
-            width: 100%;
-        }
+.btn-update:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-        .btn-back:hover {
-            background-color: #0056b3;
-        }
+/* Back to list link style */
+.btn-back {
+    text-decoration: none;
+    background: linear-gradient(135deg, #9b59b6, #8e44ad);
+    color: white;
+    padding: 15px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 8px;
+    display: inline-block;
+    margin-top: 20px;
+    text-align: center;
+    width: 100%;
+    transition: background 0.3s, transform 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-        /* Delete button */
-        .btn-delete {
-            background-color: #dc3545; /* Red */
-            color: white;
-            padding: 15px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 20px;
-        }
+.btn-back:hover {
+    background: linear-gradient(135deg, #8e44ad, #9b59b6);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(142, 68, 173, 0.3);
+}
 
-        .btn-delete:hover {
-            background-color: #c82333;
-        }
+.btn-back:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .form-container {
-                padding: 20px;
-            }
-        }
+/* Delete button */
+.btn-delete {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+    padding: 15px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+    transition: background 0.3s, transform 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-delete:hover {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(231, 76, 60, 0.3);
+}
+
+.btn-delete:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .form-control {
+        font-size: 1rem;
+    }
+
+    .btn-update, .btn-back, .btn-delete {
+        font-size: 1rem;
+        padding: 12px;
+    }
+}
     </style>
 
     <div class="form-container">

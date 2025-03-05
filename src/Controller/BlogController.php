@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Article;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -18,19 +19,128 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class BlogController extends AbstractController
 {
     #[Route('/', name: 'app_blog_index', methods: ['GET'])]
-    public function index(ArticleRepository $articleRepository): Response
+    public function index(Request $request, ArticleRepository $articleRepository, UserRepository $userRepository): Response
     {
+        // Get search parameters
+        $search = $request->query->get('search');
+        $authorId = $request->query->get('author');
+        $categoryId = $request->query->get('category');
+        $dateFrom = $request->query->get('date_from');
+        $dateTo = $request->query->get('date_to');
+        
+        // Build query
+        $queryBuilder = $articleRepository->createQueryBuilder('a')
+            ->where('a.status = :status')
+            ->setParameter('status', 'published')
+            ->orderBy('a.createdAt', 'DESC');
+        
+        // Apply filters if they exist
+        if ($search) {
+            $queryBuilder
+                ->andWhere('(a.title LIKE :search OR a.content LIKE :search)')
+                ->setParameter('search', '%' . $search . '%');
+        }
+        
+        if ($authorId) {
+            $queryBuilder
+                ->andWhere('a.author = :authorId')
+                ->setParameter('authorId', $authorId);
+        }
+        
+        if ($categoryId) {
+            $queryBuilder
+                ->innerJoin('a.categories', 'c')
+                ->andWhere('c.id = :categoryId')
+                ->setParameter('categoryId', $categoryId);
+        }
+        
+        if ($dateFrom) {
+            $queryBuilder
+                ->andWhere('a.createdAt >= :dateFrom')
+                ->setParameter('dateFrom', new \DateTime($dateFrom . ' 00:00:00'));
+        }
+        
+        if ($dateTo) {
+            $queryBuilder
+                ->andWhere('a.createdAt <= :dateTo')
+                ->setParameter('dateTo', new \DateTime($dateTo . ' 23:59:59'));
+        }
+        
+        // Get results
+        $articles = $queryBuilder->getQuery()->getResult();
+        
+        // Get all authors and categories for the search form
+        $authors = $userRepository->findAll();
+        
         return $this->render('blog/index.html.twig', [
-            'articles' => $articleRepository->findBy(['status' => 'published'], ['createdAt' => 'DESC']),
+            'articles' => $articles,
+            'authors' => $authors,
         ]);
     }
 
     #[Route('/admin', name: 'app_blog_admin_index', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function adminIndex(ArticleRepository $articleRepository): Response
+    public function adminIndex(Request $request, ArticleRepository $articleRepository, UserRepository $userRepository): Response
     {
+        // Get search parameters
+        $search = $request->query->get('search');
+        $status = $request->query->get('status');
+        $authorId = $request->query->get('author');
+        $categoryId = $request->query->get('category');
+        $dateFrom = $request->query->get('date_from');
+        $dateTo = $request->query->get('date_to');
+        
+        // Build query
+        $queryBuilder = $articleRepository->createQueryBuilder('a')
+            ->orderBy('a.createdAt', 'DESC');
+        
+        // Apply filters if they exist
+        if ($search) {
+            $queryBuilder
+                ->andWhere('(a.title LIKE :search OR a.content LIKE :search)')
+                ->setParameter('search', '%' . $search . '%');
+        }
+        
+        if ($status) {
+            $queryBuilder
+                ->andWhere('a.status = :status')
+                ->setParameter('status', $status);
+        }
+        
+        if ($authorId) {
+            $queryBuilder
+                ->andWhere('a.author = :authorId')
+                ->setParameter('authorId', $authorId);
+        }
+        
+        if ($categoryId) {
+            $queryBuilder
+                ->innerJoin('a.categories', 'c')
+                ->andWhere('c.id = :categoryId')
+                ->setParameter('categoryId', $categoryId);
+        }
+        
+        if ($dateFrom) {
+            $queryBuilder
+                ->andWhere('a.createdAt >= :dateFrom')
+                ->setParameter('dateFrom', new \DateTime($dateFrom . ' 00:00:00'));
+        }
+        
+        if ($dateTo) {
+            $queryBuilder
+                ->andWhere('a.createdAt <= :dateTo')
+                ->setParameter('dateTo', new \DateTime($dateTo . ' 23:59:59'));
+        }
+        
+        // Get results
+        $articles = $queryBuilder->getQuery()->getResult();
+        
+        // Get all authors and categories for the search form
+        $authors = $userRepository->findAll();
+        
         return $this->render('blog/admin/index.html.twig', [
-            'articles' => $articleRepository->findBy([], ['createdAt' => 'DESC']),
+            'articles' => $articles,
+            'authors' => $authors,
         ]);
     }
 

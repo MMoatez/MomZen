@@ -1,4 +1,16 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_row(form.immatriculation, {
+        'attr': {'class': 'form-control'},
+        'label': 'Immatriculation',
+        'help': "Format attendu : '123 tunis 4567'."
+    }) }}
+    {{ form_row(form.marque, {
+        'attr': {'class': 'form-control'},
+        'label': 'Marque'
+    }) }}
+    {{ form_row(form.modele, {
+        'attr': {'class': 'form-control'},
+        'label': 'Modèle'
+    }) }}
+    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

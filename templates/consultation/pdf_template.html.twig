@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ordonnance</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .header { text-align: center; font-size: 18px; font-weight: bold; }
+        .content { margin-top: 20px; font-size: 16px; }
+        .footer { margin-top: 50px; font-size: 14px; text-align: center; color: gray; }
+    </style>
+</head>
+<body>
+    <div class="header">🩺 Ordonnance Médicale</div>
+    <div class="content">
+        <p><strong>Consultation ID :</strong> {{ consultation.id }} </p>
+                <p><strong>medecin :</strong> {{ consultation.medecin.nom }} {{ consultation.medecin.prenom }}</p>
+
+        <p><strong>Ordonnance :</strong></p>
+        <p>{{ consultation.ordonnance }}</p>
+    </div>
+    <div class="footer">Clinique MomZen - Tous droits réservés</div>
+</body>
+</html>

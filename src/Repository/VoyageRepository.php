@@ -15,7 +15,29 @@ class VoyageRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Voyage::class);
     }
+    public function findAllWithAmbulance()
+    {
+        return $this->createQueryBuilder('v')
+            ->leftJoin('v.ambulance', 'a')
+            ->addSelect('a')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findBySearchAndSort(string $search = '', string $sortBy = 'id', string $order = 'asc'): array
+{
+    $queryBuilder = $this->createQueryBuilder('v');
 
+    // Ajouter une condition de recherche si un terme est fourni
+    if ($search) {
+        $queryBuilder->andWhere('v.emplacement_client LIKE :search')
+            ->setParameter('search', '%' . $search . '%');
+    }
+
+    // Trier les résultats
+    $queryBuilder->orderBy('v.' . $sortBy, $order);
+
+    return $queryBuilder->getQuery()->getResult();
+}
 //    /**
 //     * @return Voyage[] Returns an array of Voyage objects
 //     */

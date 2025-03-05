@@ -1,5 +1,4 @@
 <?php
-
 // src/Entity/Voyage.php
 namespace App\Entity;
 
@@ -26,8 +25,9 @@ class Voyage
     private $date_depart;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\NotBlank(message: "Veuillez indiquer l'emplacement du client.")]
-    private $emplacement_client;
+    #[Assert\NotBlank]
+    private string $emplacement_client;
+
 
     // Getters et Setters
 
@@ -58,7 +58,7 @@ class Voyage
         return $this;
     }
 
-    public function getEmplacementClient(): ?string
+    public function getEmplacementClient(): string
     {
         return $this->emplacement_client;
     }

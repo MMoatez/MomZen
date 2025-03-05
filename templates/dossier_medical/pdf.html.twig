@@ -1,0 +1,11 @@
+{% extends 'pdf.html.twig' %}
+
+{% block title %}Dossier Médical #{{ dossier.id }}{% endblock %}
+
+{% block content %}
+    <h1>Dossier Médical #{{ dossier.id }}</h1>
+    <p><strong>Patient:</strong> {{ dossier.patient.nom }}</p>
+    <p><strong>Semaines de grossesse:</strong> {{ dossier.grossesSemaine }}</p>
+    <p><strong>Symptômes:</strong> {{ dossier.symptotes }}</p>
+    <p><strong>Date de création:</strong> {{ dossier.datecreation|date('d/m/Y H:i') }}</p>
+{% endblock %}

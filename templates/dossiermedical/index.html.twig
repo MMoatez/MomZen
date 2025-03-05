@@ -26,6 +26,8 @@
                         <a href="{{ path('app_dossiermedical_edit', {'patientId': dossiermedical.idpatient.id, 'rendezvousId': rendezvousId, 'id': dossiermedical.id}) }}" class="btn btn-warning">✏ Modifier</a>
                         <a href="{{ path('app_consultation_new', {'dossierId': dossiermedical.id}) }}" class="btn btn-new">➕ Ajouter Consultation</a>
                         <a href="{{ path('app_consultation') }}" class="btn btn-viewdetails">📑 Consulations</a>
+                        <form action="{{ path('app_dossiermedical_analyze', {'id': dossiermedical.id}) }}" method="post">
+                  <button type="submit" class="btn btn-ai">🤖 Analyser avec l'IA</button>
                     </div>
                 </div>
             {% endfor %}
@@ -36,6 +38,18 @@
 {# 🎨 CSS Styling #}
 <style>
     /* 🌟 Page Container */
+    .btn-ai {
+    background-color: #6610f2;
+    color: white;
+}
+
+   .btn-ai:hover {
+    background-color: #520dc2;
+}
+
+
+
+
     .container {
         max-width: 1200px;
         margin: auto;

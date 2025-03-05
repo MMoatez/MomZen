@@ -1,34 +1,61 @@
 {% extends 'Basefront.html.twig' %}
+
 {% block title %}Gestion des Ambulances{% endblock %}
 
 {% block body %}
     <h1>Gestion des Ambulances</h1>
+
+    {# Formulaire de recherche #}
+    <form method="get" action="{{ path('app_ambulance_index') }}">
+        <input type="text" 
+               name="search" 
+               value="{{ search|default('') }}" {# Gestion de l'absence de valeur #}
+               placeholder="Rechercher...">
+        <button type="submit">Rechercher</button>
+    </form>
+
+    {# Tableau principal #}
     <table class="table">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Chauffeur</th>
-                <th>Immatriculation</th>
+               <th>
+    <a href="{{ path('app_ambulance_index', {
+        'sort_by': 'immatriculation', 
+        'order': (sort_by|default('') == 'immatriculation' and order|default('asc') == 'asc') ? 'desc' : 'asc'
+    }) }}">
+        Immatriculation
+    </a>
+</th>
                 <th>Marque</th>
                 <th>Modèle</th>
-                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for ambulance in ambulances %}
                 <tr>
                     <td>{{ ambulance.id }}</td>
-                    <td>{{ ambulance.chauffeur.nom }} {{ ambulance.chauffeur.prenom }}</td>
+                    <td>
+                        {% if ambulance.chauffeur %}
+                            {{ ambulance.chauffeur.nom }} {{ ambulance.chauffeur.prenom }}
+                        {% else %}
+                            <span class="text-muted">Aucun chauffeur</span>
+                        {% endif %}
+                    </td>
                     <td>{{ ambulance.immatriculation }}</td>
                     <td>{{ ambulance.marque }}</td>
                     <td>{{ ambulance.modele }}</td>
-                    <td>
-                        <a href="{{ path('app_ambulance_edit', {'id': ambulance.id}) }}" class="btn btn-warning">Modifier</a>
-                        <a href="{{ path('app_ambulance_delete', {'id': ambulance.id}) }}" class="btn btn-danger">Supprimer</a>
-                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">Aucune ambulance trouvée</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
-    <a href="{{ path('app_ambulance_new') }}" class="btn btn-primary">Ajouter une Ambulance</a>
+
+    <a href="{{ path('app_ambulance_map') }}" class="btn btn-primary">
+        <i class="fas fa-map-marker-alt"></i> Voir la carte
+    </a>
 {% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'baseFront.html.twig' %}
+{% extends 'baseback.html.twig' %}
 
 {% block title %}Edit Ambulance{% endblock %}
 
@@ -83,4 +83,20 @@
     <a href="{{ path('app_ambulance_index') }}">back to list</a>
 
     {{ include('ambulance/_delete_form.html.twig') }}
+    {{ form_start(form) }}
+    {{ form_row(form.immatriculation, {
+        'attr': {'class': 'form-control'},
+        'label': 'Immatriculation',
+        'help': "Format attendu : '123 tunis 4567'."
+    }) }}
+    {{ form_row(form.marque, {
+        'attr': {'class': 'form-control'},
+        'label': 'Marque'
+    }) }}
+    {{ form_row(form.modele, {
+        'attr': {'class': 'form-control'},
+        'label': 'Modèle'
+    }) }}
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+{{ form_end(form) }}
 {% endblock %}

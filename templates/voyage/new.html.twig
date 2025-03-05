@@ -8,4 +8,19 @@
     {{ include('voyage/_form.html.twig') }}
 
     <a href="{{ path('app_voyage_index') }}">back to list</a>
+    {{ form_start(form) }}
+    {{ form_row(form.ambulance, {
+        'attr': {'class': 'form-control'},
+        'label': 'Ambulance'
+    }) }}
+    {{ form_row(form.date_depart, {
+        'attr': {'class': 'form-control'},
+        'label': 'Date de Départ'
+    }) }}
+    {{ form_row(form.emplacement_client, {
+        'attr': {'class': 'form-control'},
+        'label': 'Emplacement du Client'
+    }) }}
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+{{ form_end(form) }}
 {% endblock %}

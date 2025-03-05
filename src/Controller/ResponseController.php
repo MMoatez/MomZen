@@ -6,6 +6,7 @@ use App\Entity\Response;
 use App\Entity\Reclamation;
 use App\Form\ResponseType;
 use App\Repository\ResponseRepository;
+use App\Service\ReclamationMailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,11 +19,17 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class ResponseController extends AbstractController
 {
     #[Route('/reclamation/{id}/new', name: 'app_response_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, Reclamation $reclamation): HttpResponse
+    public function new(
+        Request $request, 
+        EntityManagerInterface $entityManager, 
+        Reclamation $reclamation,
+        ReclamationMailer $reclamationMailer
+    ): HttpResponse
     {
         $response = new Response();
         $response->setReclamation($reclamation);
         $response->setAdmin($this->getUser());
+        // createdAt and updatedAt are set in the constructor of Response
 
         $form = $this->createForm(ResponseType::class, $response);
         $form->handleRequest($request);
@@ -32,7 +39,10 @@ class ResponseController extends AbstractController
             $entityManager->persist($response);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Response has been added successfully');
+            // Send email notification to the user
+            $reclamationMailer->sendResponseNotification($response);
+
+            $this->addFlash('success', 'Response has been added successfully and notification email sent to the user');
             return $this->redirectToRoute('app_reclamation_admin_show', ['id' => $reclamation->getId()]);
         }
 
@@ -44,15 +54,24 @@ class ResponseController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_response_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Response $response, EntityManagerInterface $entityManager): HttpResponse
+    public function edit(
+        Request $request, 
+        Response $response, 
+        EntityManagerInterface $entityManager,
+        ReclamationMailer $reclamationMailer
+    ): HttpResponse
     {
         $form = $this->createForm(ResponseType::class, $response);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // updatedAt is automatically updated via the PreUpdate lifecycle callback
             $entityManager->flush();
 
-            $this->addFlash('success', 'Response has been updated successfully');
+            // Send email notification about the updated response
+            $reclamationMailer->sendResponseNotification($response);
+
+            $this->addFlash('success', 'Response has been updated successfully and notification email sent to the user');
             return $this->redirectToRoute('app_reclamation_admin_show', ['id' => $response->getReclamation()->getId()]);
         }
 

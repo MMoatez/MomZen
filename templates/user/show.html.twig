@@ -4,95 +4,149 @@
 
 {% block body %}
     <style>
-        /* Style général de la table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 16px;
-            background-color: #fff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
+       /* Style général de la page */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7fc;
+    padding: 20px;
+    color: #333;
+}
 
-        /* Style des en-têtes de la table */
-        th {
-            background-color: #f8f9fa;
-            color: #333; /* Texte en noir */
-            text-align: left;
-            padding: 12px;
-            font-weight: bold;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-        }
+/* Titre de la page */
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
 
-        /* Style des cellules de la table */
-        td {
-            text-align: left;
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-            color: #555;
-        }
+/* Style général de la table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
 
-        /* Style des liens */
-        a {
-            color: #007bff;
-            text-decoration: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-weight: bold;
-            display: inline-block;
-            margin: 5px 0;
-            text-align: center;
-            transition: background-color 0.3s, color 0.3s;
-        }
+/* Style des en-têtes de la table */
+th {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    text-align: left;
+    padding: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
-        /* Effet hover pour les liens */
-        a:hover {
-            background-color: #007bff;
-            color: white;
-        }
+/* Style des cellules de la table */
+td {
+    text-align: left;
+    padding: 15px;
+    border-bottom: 1px solid #e0e0e0;
+    color: #555;
+}
 
-        /* Style du lien de retour et de l'édition */
-        .action-links {
-            background-color: #28a745;
-            color: white;
-        }
+/* Effet hover pour les lignes de la table */
+tr:hover {
+    background-color: #f8f9fa;
+}
 
-        .action-links:hover {
-            background-color: #218838;
-        }
+/* Style des images */
+td img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #e0e0e0;
+}
 
-        /* Style pour le bouton de suppression */
-        .btn-delete {
-            background-color: #dc3545; /* Rouge */
-            color: white;
-            text-align: center;
-        }
+/* Style pour le QR Code */
+td qr-code {
+    display: block;
+    margin: 0 auto;
+}
 
-        .btn-delete:hover {
-            background-color: #c82333;
-        }
+/* Style des liens */
+a {
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    display: inline-block;
+    margin: 5px 0;
+    text-align: center;
+    transition: background 0.3s, transform 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-        /* Style pour le conteneur d'actions */
-        .action-buttons {
-            margin-top: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+/* Style du lien de retour et de l'édition */
+.action-links {
+    background: linear-gradient(135deg, #28a745, #218838);
+    color: white;
+}
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            table {
-                width: 100%;
-            }
+.action-links:hover {
+    background: linear-gradient(135deg, #218838, #28a745);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(40, 167, 69, 0.3);
+}
 
-            .action-buttons {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
+.action-links:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Style pour le bouton de suppression */
+.btn-delete {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+    text-align: center;
+}
+
+.btn-delete:hover {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(231, 76, 60, 0.3);
+}
+
+.btn-delete:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Style pour le conteneur d'actions */
+.action-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    table {
+        width: 100%;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+}
     </style>
 
     <h1>User Details</h1>
@@ -141,6 +195,13 @@
                             {% endif %}
                         </td>
             </tr>
+            </tr>
+                     <th>QR Code</th>
+                        <td>
+                            {{ qrCodeResult.getString() | raw }}
+                        </td>
+            </tr>
+
         </tbody>
     </table>
 
