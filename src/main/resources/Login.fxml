@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.Login"
+            prefHeight="500.0" prefWidth="800.0"
+            style="-fx-background-color: #f5f7fa;">
+
+    <VBox alignment="CENTER" spacing="20" AnchorPane.topAnchor="50.0" AnchorPane.rightAnchor="50.0"
+          AnchorPane.leftAnchor="50.0" AnchorPane.bottomAnchor="50.0">
+        <padding>
+            <Insets top="40" right="40" bottom="40" left="40"/>
+        </padding>
+
+        <!-- Logo/Titre -->
+        <VBox alignment="CENTER" spacing="10">
+            <ImageView fitWidth="100.0" fitHeight="100.0">
+                <Image url="@/images/login.jpg" />
+            </ImageView>
+            <Label text="Connexion" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        </VBox>
+
+        <!-- Formulaire -->
+        <GridPane hgap="10" vgap="15" alignment="CENTER">
+            <Label text="Email:" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                   style="-fx-font-size: 14px; -fx-text-fill: #34495e;"/>
+            <TextField fx:id="emailField" promptText="Votre email" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                       prefWidth="300" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #bdc3c7;"/>
+
+            <Label text="Mot de passe:" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                   style="-fx-font-size: 14px; -fx-text-fill: #34495e;"/>
+            <PasswordField fx:id="passwordField" promptText="Votre mot de passe" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                           prefWidth="300" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #bdc3c7;"/>
+
+            <Label fx:id="errorLabel" text="" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                   style="-fx-text-fill: #e74c3c; -fx-font-size: 12px; -fx-alignment: CENTER;"/>
+        </GridPane>
+
+        <!-- Bouton de connexion -->
+        <Button text="Se connecter" onAction="#handleLogin"
+                style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 5;"
+                prefWidth="200" prefHeight="40"/>
+
+        <!-- Lien vers inscription -->
+        <HBox fx:id="mainContainer" alignment="CENTER" spacing="5">
+            <Label text="Pas encore de compte?" style="-fx-text-fill: #7f8c8d;"/>
+            <Hyperlink text="S'inscrire" style="-fx-text-fill: #3498db; -fx-font-weight: bold;"
+                       onAction="#loadRegistration"/>
+        </HBox>
+    </VBox>
+
+    <!-- Version de l'application -->
+    <Label text="Version 1.0.0" style="-fx-text-fill: #95a5a6; -fx-font-size: 10px;"
+           AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10"/>
+</AnchorPane>
