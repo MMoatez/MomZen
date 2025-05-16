@@ -21,12 +21,10 @@ Ce projet a été développé par l’équipe **NetCoders**, dans le cadre d’u
 
 ## ⚙️ Tech Stack
 
-### 💻 Backend
 - Symfony 6.4 (PHP)
 - Doctrine ORM
 - MySQL
 
-### 🖥 Frontend
 - Twig (templating)
 - Bootstrap 5
 - JavaScript (pour interactivité)
